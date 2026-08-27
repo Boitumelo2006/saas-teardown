@@ -18,3 +18,72 @@
 ---
 
 ## Architecture
+                  +-------------------+
+                  |   Commander CLI   |
+                  +---------+---------+
+                            |
+                            v
+                  +-------------------+
+                  |   Cache Check     |<---> [ /.cache ]
+                  +---------+---------+
+                            | (Cache Miss)
+                            v
+                  +-------------------+
+                  | Crawler Engine    |
+                  +---------+---------+
+                            |
+                            v
+                  +-------------------+
+                  | Fingerprinter     |
+                  +---------+---------+
+                            |
+                            v
+                  +-------------------+
+                  | Gemini Analyzer   | (Zod Validated)
+                  +---------+---------+
+                            |
+                            v
+                  +-------------------+
+                  | File Persistence  |---> [ /outputs ]
+                  +-------------------+
+
+---
+
+## Quick Start
+
+### Prerequisites
+
+* Node.js v18+ 
+* Gemini API Key ([Google AI Studio](https://aistudio.google.com/))
+
+### Installation
+
+```bash
+git clone [https://github.com/Boitumelo2006/saas-teardown.git](https://github.com/Boitumelo2006/saas-teardown.git)
+cd saas-teardown
+npm install
+
+Environment Configuration
+Create a .env file in the project root:
+GEMINI_API_KEY=your_gemini_api_key_here
+GEMINI_MODEL=gemini-3.5-flash-lite
+
+CLI Usage
+Analyze Single Target
+node src/index.js analyze --url [https://stripe.com](https://stripe.com)
+
+Run Batch Teardown Pipeline
+node src/index.js batch --input targets.json
+
+License
+This project is licensed under the MIT License.
+---
+
+### Step 3: Commit and Push the README Update
+
+In PowerShell, save the updated `README.md` and push it:
+
+```powershell
+git add README.md
+git commit -m "docs: add architecture diagram, CLI usage, and benchmark highlights to README"
+git push
