@@ -198,4 +198,8 @@ program
     }
   });
 
-program.parse(process.argv);
+// ONLY parse CLI flags when index.js is invoked directly as a script
+const isDirectEntrypoint = process.argv[1] && path.resolve(process.argv[1]) === path.resolve(__filename);
+if (isDirectEntrypoint) {
+  program.parse(process.argv);
+}
