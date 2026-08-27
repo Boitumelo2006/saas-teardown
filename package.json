@@ -9,5 +9,9 @@
     "teardown": "node src/index.js url",
     "teardown:batch": "node src/index.js batch",
     "benchmark": "node scripts/benchmark.js"
+  },
+  "dependencies": {
+    "handlebars": "^4.7.9",
+    "pdfkit": "^0.20.1"
   }
 }
