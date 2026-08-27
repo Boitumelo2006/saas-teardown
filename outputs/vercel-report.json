@@ -1,0 +1,35 @@
+{
+  "company_name": "Vercel",
+  "value_proposition": "Build and deploy agents on infrastructure that thinks like them, offering agentic infrastructure for coding agents, sandboxed VMs, durable backends, and automated error investigation.",
+  "observed_facts": [
+    {
+      "fact": "The company provides agentic infrastructure features such as durable orchestration, sandboxed environments, an AI model gateway, and fluid compute.",
+      "evidence": "Features Durable Orchestration Sandboxed Environments AI Model Gateway Fluid Compute"
+    },
+    {
+      "fact": "Notion uses Vercel to power millions of agent conversations daily.",
+      "evidence": "Notion powers millions of agent conversations daily on Vercel."
+    }
+  ],
+  "pricing_plans": [
+    {
+      "plan": "Standard Pricing Plan",
+      "features": [],
+      "price": "Not specified"
+    }
+  ],
+  "detected_technologies": [
+    {
+      "name": "Next.js",
+      "category": "Frontend Framework"
+    },
+    {
+      "name": "Vercel",
+      "category": "Hosting & Infrastructure"
+    }
+  ],
+  "analytical_insights": [
+    "Vercel is positioning itself heavily in the AI agent deployment ecosystem by providing specialized APIs, CLIs, MCP, Skills, and sandboxed virtual machines.",
+    "The website leverages robust modern frontend tooling, relying on Next.js and Vercel's own edge network infrastructure for performance optimization."
+  ]
+}

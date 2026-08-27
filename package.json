@@ -1,0 +1,13 @@
+{
+  "name": "saas-teardown",
+  "version": "1.0.0",
+  "type": "module",
+  "bin": {
+    "saas-teardown": "./src/index.js"
+  },
+  "scripts": {
+    "teardown": "node src/index.js url",
+    "teardown:batch": "node src/index.js batch",
+    "benchmark": "node scripts/benchmark.js"
+  }
+}

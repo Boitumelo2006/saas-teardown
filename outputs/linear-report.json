@@ -1,0 +1,54 @@
+{
+  "company_name": "Linear",
+  "value_proposition": "The product development system for teams and agents, purpose-built for modern teams with AI workflows at its core to plan and build products faster.",
+  "observed_facts": [
+    {
+      "fact": "Linear is used by over 40,000 product teams.",
+      "evidence": "Linear powers over 40,000 product teams. From ambitious startups to major enterprises."
+    },
+    {
+      "fact": "Linear features built-in AI agents and automations.",
+      "evidence": "Build and deploy AI agents that work alongside you as teammates. Work on complex tasks together or delegate entire issues end-to-end."
+    }
+  ],
+  "pricing_plans": [
+    {
+      "plan": "Standard",
+      "features": [
+        "Issue tracking",
+        "Roadmaps",
+        "Cycles"
+      ]
+    },
+    {
+      "plan": "Plus",
+      "features": [
+        "Advanced permissions",
+        "Guest access",
+        "Custom roles"
+      ]
+    },
+    {
+      "plan": "Enterprise",
+      "features": [
+        "Security features",
+        "SAML SSO",
+        "Dedicated support"
+      ]
+    }
+  ],
+  "detected_technologies": [
+    {
+      "name": "Next.js",
+      "category": "Frontend Framework"
+    },
+    {
+      "name": "Cloudflare",
+      "category": "Infrastructure"
+    }
+  ],
+  "analytical_insights": [
+    "Linear heavily markets its integration of AI agents directly into the software development lifecycle, differentiating itself from traditional issue trackers.",
+    "The application relies heavily on modern frontend architectures, specifically leveraging Next.js and Cloudflare for high-speed content delivery and rendering."
+  ]
+}

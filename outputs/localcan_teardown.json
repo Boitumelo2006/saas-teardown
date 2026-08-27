@@ -1,0 +1,56 @@
+{
+  "company_name": "localcan",
+  "value_proposition": "Put localhost on a stable Public URL to test webhooks or share previews without deploying.",
+  "observed_facts": [
+    {
+      "fact": "LocalCan offers public URLs for developers, designers, and agents to test webhooks or share previews without deploying.",
+      "evidence": "Public URLs for developers, designers and agents. Put localhost on a stable Public URL to test webhooks or share previews without deploying."
+    },
+    {
+      "fact": "The product provides a Snapshot feature so links keep working after closing the laptop.",
+      "evidence": "Publish a Snapshot and the link keeps working after close the laptop."
+    },
+    {
+      "fact": "LocalCan offers flat pricing with no usage bills or credits to top up.",
+      "evidence": "One flat price. No usage bills. No credits to top up, no per-gigabyte overages, no metered invoice at the end of the month."
+    }
+  ],
+  "pricing_plans": [
+    {
+      "plan": "Free",
+      "price": "$0",
+      "features": []
+    },
+    {
+      "plan": "Solo",
+      "price": "$8 /month",
+      "features": []
+    },
+    {
+      "plan": "Pro",
+      "price": "$12 /month",
+      "features": []
+    },
+    {
+      "plan": "Teams",
+      "price": "$45 /month",
+      "features": []
+    },
+    {
+      "plan": "Lifetime License",
+      "price": "$189 /once",
+      "features": []
+    }
+  ],
+  "detected_technologies": [
+    {
+      "name": "Next.js",
+      "category": "Frontend Framework"
+    }
+  ],
+  "analytical_insights": [
+    "LocalCan positions itself as an alternative to ngrok and Cloudflare Tunnel.",
+    "The pricing model emphasizes predictable, flat per-seat billing rather than bandwidth or request usage limits.",
+    "The tool integrates heavily with AI coding assistants and agents such as Claude Code, Cursor, and Codex via MCP servers or CLI."
+  ]
+}

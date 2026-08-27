@@ -1,0 +1,153 @@
+{
+  "site": {
+    "name": "localcan",
+    "url": "https://www.localcan.com/"
+  },
+  "crawl": {
+    "success": true,
+    "latencyMs": 5864
+  },
+  "detectedTechnologies": [
+    {
+      "technology": "Next.js",
+      "category": "Frontend Framework",
+      "confidence": "high",
+      "evidence_score": 2,
+      "evidence_sources": [
+        "network",
+        "script"
+      ],
+      "evidence": [
+        {
+          "type": "network_request",
+          "value": "https://www.localcan.com/_next/static/media/CascadiaMono%5Bwght%5D-s.p.152acfko1ayoi.woff2"
+        },
+        {
+          "type": "script_tag",
+          "value": "https://www.localcan.com/_next/static/chunks/2cdzlbfypxxcv.js"
+        }
+      ]
+    }
+  ],
+  "rawEvidence": {
+    "networkRequests": [
+      "https://www.localcan.com/",
+      "https://www.localcan.com/_next/static/media/CascadiaMono%5Bwght%5D-s.p.152acfko1ayoi.woff2",
+      "https://www.localcan.com/_next/static/media/InterVariable-s.p.2c0y96ae70xfx.woff2",
+      "https://www.localcan.com/_next/static/chunks/44v3f95b7a0xd.css",
+      "https://www.localcan.com/_next/static/chunks/2zdjo1kh71xem.css",
+      "https://www.localcan.com/_next/static/chunks/0x8uppyf3ptag.css",
+      "https://www.localcan.com/_next/static/chunks/28d9t225fcf-z.css",
+      "https://www.localcan.com/_next/static/chunks/355iwbo9ly9ww.js",
+      "https://www.localcan.com/_next/static/chunks/2cdzlbfypxxcv.js",
+      "https://www.localcan.com/_next/static/chunks/35l77eu1q-q02.js",
+      "https://www.localcan.com/_next/static/chunks/1te-d50byoq5d.js",
+      "https://www.localcan.com/_next/static/chunks/3ulg-5bhzlvid.js",
+      "https://www.localcan.com/_next/static/chunks/turbopack-0qebyi64fjuha.js",
+      "https://www.localcan.com/_next/static/chunks/1dmm3rhktbefj.js",
+      "https://www.localcan.com/_next/static/chunks/2im7c515bo69p.js",
+      "https://www.localcan.com/_next/static/chunks/3-l9933jwcphn.js",
+      "https://www.localcan.com/_next/static/chunks/1pyxig57j05tj.js",
+      "https://www.localcan.com/_next/static/chunks/0aizys72mzqfk.js",
+      "https://www.localcan.com/_next/static/chunks/0aldwvo7yslm4.js",
+      "https://umami.journal.do/script.js",
+      "https://umami.journal.do/recorder.js",
+      "https://www.localcan.com/_next/static/media/CascadiaMonowght-s.p.152acfko1ayoi.woff2",
+      "https://www.localcan.com/pixel-bg.png",
+      "https://www.localcan.com/face.avif",
+      "https://www.localcan.com/webhook-testing-361bad03.avif",
+      "https://www.localcan.com/share-preview-cde6ec91.avif",
+      "https://www.localcan.com/snapshot-12f424b2.avif",
+      "https://umami.journal.do/api/websites/18de60fc-851c-4b44-b16f-3959ca19b512/recorder",
+      "https://www.localcan.com/webhook-testing-361bad03.mp4",
+      "https://www.localcan.com/share-preview-cde6ec91.mp4",
+      "https://www.localcan.com/snapshot-12f424b2.mp4",
+      "https://www.localcan.com/changelog?_rsc=5CB68i4pnAekjehf",
+      "https://www.localcan.com/docs?_rsc=5CB68i4pnAekjehf",
+      "https://www.localcan.com/?_rsc=7h4NYy5eoyMcNlUN",
+      "https://www.localcan.com/?_rsc=yIp22O3xgPPxC28X"
+    ],
+    "responseHeaders": {
+      "cache-control": "s-maxage=31536000",
+      "content-encoding": "gzip",
+      "content-security-policy": "default-src * data: 'unsafe-eval' 'unsafe-inline'; frame-ancestors 'self' https://umami.journal.do",
+      "content-type": "text/html; charset=utf-8",
+      "date": "Thu, 27 Aug 2026 16:58:09 GMT",
+      "etag": "\"rjzrex4l3e7508\"",
+      "referrer-policy": "no-referrer-when-downgrade",
+      "server": "nginx",
+      "vary": "rsc, next-router-state-tree, next-router-prefetch, next-router-segment-prefetch, Accept-Encoding",
+      "x-content-type-options": "nosniff",
+      "x-nextjs-cache": "HIT",
+      "x-nextjs-prerender": "1\n1",
+      "x-nextjs-stale-time": "300",
+      "x-powered-by": "Next.js",
+      "x-xss-protection": "1; mode=block"
+    },
+    "scripts": [
+      "https://www.localcan.com/_next/static/chunks/2cdzlbfypxxcv.js",
+      "https://www.localcan.com/_next/static/chunks/35l77eu1q-q02.js",
+      "https://www.localcan.com/_next/static/chunks/1te-d50byoq5d.js",
+      "https://www.localcan.com/_next/static/chunks/3ulg-5bhzlvid.js",
+      "https://www.localcan.com/_next/static/chunks/turbopack-0qebyi64fjuha.js",
+      "https://www.localcan.com/_next/static/chunks/1dmm3rhktbefj.js",
+      "https://www.localcan.com/_next/static/chunks/2im7c515bo69p.js",
+      "https://www.localcan.com/_next/static/chunks/3-l9933jwcphn.js",
+      "https://www.localcan.com/_next/static/chunks/1pyxig57j05tj.js",
+      "https://www.localcan.com/_next/static/chunks/0aizys72mzqfk.js",
+      "https://www.localcan.com/_next/static/chunks/0aldwvo7yslm4.js",
+      "https://www.localcan.com/_next/static/chunks/0cz1d0mv5g_q7.js",
+      "https://www.localcan.com/_next/static/chunks/355iwbo9ly9ww.js",
+      "https://umami.journal.do/script.js",
+      "https://umami.journal.do/recorder.js"
+    ],
+    "pageData": {
+      "title": "LocalCan: Public URLs for developers, designers and agents",
+      "headings": [
+        "Public URLs for developers, designers and agents.",
+        "Test webhooks and OAuth callbacks",
+        "Share it without deploying",
+        "Send the link. Close the laptop.",
+        "Everything above, agents can do",
+        "Not just Public URLs",
+        "One flat price. No usage bills.",
+        "No pointless trip across the planet",
+        "Built for Teams. Flat per-seat billing. Roles and seat control (RBAC). Team-level custom domains. Shared access policies. Okta SSO + SCIM provisioning. Audit log. Founder-led support.",
+        "Works for developers, SaaS owners and agencies",
+        "Free",
+        "Solo",
+        "Pro",
+        "Teams",
+        "Lifetime License",
+        "Frequently asked questions",
+        "Can AI agents like Claude Code use LocalCan?",
+        "Can I use LocalCan without a subscription?",
+        "How does pricing work for a team?",
+        "What does LocalCan store, and is our traffic private?",
+        "What is the difference between a Public URL and a Snapshot?",
+        "Can I use my own domain?",
+        "Do our custom domains and URLs stay with the team when someone leaves?",
+        "Can everyone on the team use it, not just CLI users?",
+        "Do you offer SSO and enterprise security?",
+        "What roles and permissions do teams get?",
+        "How many team members can I invite?",
+        "How do I add or remove members and seats?",
+        "Can we get one invoice for the whole team?",
+        "Can I switch plans?",
+        "What developers say.",
+        "Twelve seats. One bill. Flat per-seat pricing, no surprises, set up in a minute."
+      ],
+      "pricingLinks": [
+        {
+          "text": "Pricing",
+          "href": "https://www.localcan.com/#pricing"
+        },
+        {
+          "text": "Pricing",
+          "href": "https://www.localcan.com/#pricing"
+        }
+      ],
+      "bodyTextSnippet": "LocalCan TM Docs Changelog Pricing Log In Start Building S brew install localcan Public URLs for developers, designers and agents. Put localhost on a stable Public URL to test webhooks or share previews without deploying. Publish a Snapshot and the link keeps working after you close the laptop. Start building S Download D Free 14-day trial included. No credit card required. Trusted by the dev teams at Before LocalCan, we wasted valuable time troubleshooting virtual hosts and hosts files. Now it's as simple as flicking a switch and we're ready in seconds. Support is also outstanding, with issues resolved within a day. — Yves R. from Datatim 01 Test webhooks and OAuth callbacks Point Stripe, Clerk, or GitHub at a stable Public URL and watch every delivery land in the inspector. Replay a failed request instead of re-triggering the provider. 02 Share it without deploying Built it with Cursor or Claude Code and it runs on localhost. Send a real HTTPS link now, with no commit, no build pipeline, and no hosting account. 03 Send the link. Close the laptop. Publish a Snapshot and the same Public URL serves a static copy whenever your machine is offline. Lock it with a password or a secret link that holds while your laptop sleeps, on your own domain. 04 Everything above, agents can do Over MCP or the CLI, from Claude Code, Cursor, or any agent. Create a Public URL Publish a Snapshot Set a password Debug a failing webhook ⏸︎ paused Not just Public URLs ✲ EXPOSE TCP SERVICES Tunnel databases, SSH boxes, and Kubernetes clusters. Anything that speaks TCP, not just HTTP/S. ✲ TEST ON REAL DEVICE Open your localhost build on an actual device over HTTPS, with no deploy and no certificate warnings. ✲ BUILD MCP SERVERS Hosted AI clients need a real public URL, and you need to see every payload they send. LocalCan does both. Although LocalCan is framework agnostic, it's been fully tested with: One flat price. No usage bills. No credits to top up, no per-gigabyte overages, no metered invoice at the end of the month. You know what LocalCan costs before you start, and the number doesn't move when your testing gets busy. LocalCan Invoice 10 seats $150 Flat ✓ $150 Competitor Invoice Base $20 Endpoints $330 Data $32 HTTP Requests $21 TCP Connections $3 Hours overage $19 Varies ⚠️ No pointless trip across the planet An edge server in each region means a tunnel between two people in the same city stays in that city. Built for Teams. Flat per-seat billing. Roles and seat control (RBAC). Team-level custom domains. Shared access policies. Okta SSO + SCIM provisioning. Audit log. Founder-led support. Start a Team Trial Free 14-day trial included. No credit card required. Works for developers, SaaS owners and agencies Start any paid plan with a 14-day free trial, no credit card required. VAT may apply. Have questions? Contact us. Pay monthly Pay yearly Save up to 25% Free $0 For ephemeral Public URLs and local development Sign Up Free ✓ Desktop app + CLI Mac / Windows / Linux ✓ 1 live Public URL 60-min sessions, 1 GB/month ✓ Snapshots (150 MB) Always-on Public URL ✓ MCP server for AI agents Claude Code / Codex / Cursor ✓ Unlimited .local domains ✓ Automatic HTTPS ✓ Inspect traffic ✓ Replay requests Solo $8 /month For solo developers with one device Start Free Trial Everything in Free, plus: ✓ 1 user, 1 device Mac / Windows / Linux ✓ 5 live Public URLs HTTPS / TCP ✓ Snapshots (1 GB) Always-on Public URL ✓ Access control Password, secret link, IP rules ✓ 2 custom domains ✓ MCP server for AI agents Claude Code / Codex / Cursor ✓ 48h email support Pro Most Popular $12 /month For developers with multiple projects and devices Start Free Trial Everything in Free, plus: ✓ 1 user, 2 devices Mac / Windows / Linux ✓ 10 live Public URLs HTTPS / TCP ✓ Snapshots (2 GB) Always-on Public URL ✓ Access control Password, secret link, IP rules ✓ 4 custom domains ✓ MCP server for AI agents Claude Code / Codex / Cursor ✓ 24h email support Teams $45 /month For teams of any size Start Free Trial Everything in Pro, plus: ✓ 3 seats included $15/seat/month ✓ Team-level custom domains ✓ Unlimited team members ✓ Unlimited custom domains ✓ Unlimited Public URLs ✓ Snapshots (10 GB) Always-on Public URL ✓ Team access policies One policy shared across many URLs ✓ RBAC and user roles ✓ Okta SSO + SCIM provisioning ✓ Audit Log ✓ Priority Zoom & email support Lifetime License Limited Offer No subscription, 2 devices, 10 Public URLs, 4 custom domains, 1 year of free app updates. $189 /once Buy License Frequently asked questions Can AI agents like Claude Code use LocalCan? Can I use LocalCan without a subscription? How does pricing work for a team? What does LocalCan store, and is our traffic private? What is the difference between a Public URL and a Snapshot? Can I use my own domain? Do our custom domains and URLs stay with the team when someone leaves? Can everyone on the team use it, not just CLI users? Do you offer SSO and enterprise security? What roles and permissions do teams get? How many team members can I invite? How do I add or remove members and seats? Can we get one invoice for the whole team? Can I switch plans? What developers say. Danny Postma @dannypostmaa LocalCan is amazing ❤️ Tony Dinh 🎯 @tdinh_me @LocalCanApp is so cool! Jesse Sibley @JessetheSibley This tool is a must for any SaaS developer ✨ Replaces ngrok and now makes testing webhooks locally an absolute delight. Web Bae @WebIsBae For my @webflow folks who have never heard of ngrok… Been loving @LocalCanApp as an easy way to serve local code to my dev websites. Works with all browsers (no CORS or https errors) and you can assign a Public URL in one button click which makes it super easy to test your dev code on mobile devices. Guilherme @goenning Best purchase I made this week @LocalCanApp I tried so many alternatives and this is has been the best by far! Working with webhooks instantly goes from 🤬 to 🤩 (not affiliated, just an amazing app!) Fayaz Ahmed @fayazara Okay, @LocalCanApp is my new favourite developer tool. I am working on a realtime feature with web app and phones, where it was mandatory for me to have https and the .local urls work so perfectly.🤌 Mikael Henriksson @mhenrixon I was super impressed with the ease of @LocalCanApp It made me want to give them money rather than fiddle with configuration. And because it fits my existing use of .local domains in my etc. hosts for each project. RJ @inthepacket Do yourself a favour, stop messing with ngrok and just use @LocalCanApp. I’ve been using it to test some internal webhooks and it’s wonderful Razvan Statescu @StatescuRazvan I just started using @LocalCanApp, and it works perfectly as an ngrok alternative. Congrats! Danny Postma @dannypostmaa LocalCan is amazing ❤️ Tony Dinh 🎯 @tdinh_me @LocalCanApp is so cool! Jesse Sibley @JessetheSibley This tool is a must for any SaaS developer ✨ Replaces ngrok and now makes testing webhooks locally an absolute delight. Web Bae @WebIsBae For my @webflow folks who have never heard of ngrok… Been loving @LocalCanApp as an easy way to serve local code to my dev websites. Works with all browsers (no CORS or https errors) and you can assign a Public URL in one button click which makes it super easy to test your dev code on mobile devices. Guilherme @goenning Best purchase I made this week @LocalCanApp I tried so many alternatives and this is has been the best by far! Working with webhooks instantly goes from 🤬 to 🤩 (not affiliated, just an amazing app!) Fayaz Ahmed @fayazara Okay, @LocalCanApp is my new favourite developer tool. I am working on a realtime feature with web app and phones, where it was mandatory for me to have https and the .local urls work so perfectly.🤌 Mikael Henriksson @mhenrixon I was super impressed with the ease of @LocalCanApp It made me want to give them money rather than fiddle with configuration. And because it fits my existing use of .local domains in my etc. hosts for each project. RJ @inthepacket Do yourself a favour, stop messing with ngrok and just use @LocalCanApp. I’ve been using it to test some internal webhooks and it’s wonderful Razvan Statescu @StatescuRazvan I just started using @LocalCanApp, and it works perfectly as an ngrok alternative. Congrats! Twelve seats. One bill. Flat per-seat pricing, no surprises, set up in a minute. Start Free Trial S Download D Free 14-day trial included. No credit card required. LocalCan™ Develop your apps with Public URLs and .local domains Product Download Pricing Changelog Dashboard Resources LocalCan Blog Free webhook tester AI code assistant llms.txt Legal Terms Privacy Documentation Quick start Installation Public URLs Custom domains Local domains CLI AI agents Troubleshooting Alternatives Ngrok alternative Cloudflare Tunnel alternative Ngrok vs Cloudflare vs LocalCan Webhooks Stripe GitHub Shopify Twilio Slack Clerk Supabase All webhooks © 2023-2026 LocalCan™. All rights reserved."
+    }
+  }
+}

@@ -1,0 +1,233 @@
+{
+  "site": {
+    "name": "cal",
+    "url": "https://cal.com"
+  },
+  "crawl": {
+    "success": true,
+    "latencyMs": 4187
+  },
+  "detectedTechnologies": [
+    {
+      "technology": "PostHog",
+      "category": "Analytics",
+      "confidence": "high",
+      "evidence_score": 3,
+      "evidence_sources": [
+        "network",
+        "script"
+      ],
+      "evidence": [
+        {
+          "type": "network_request",
+          "value": "https://eu-assets.i.posthog.com/static/array.js"
+        },
+        {
+          "type": "network_request",
+          "value": "https://eu-assets.i.posthog.com/array/phc_jrYSGC4qf6Se7YWQoDHM0xhZGxN1jEdqF5rqyfAqg1/config.js"
+        },
+        {
+          "type": "script_tag",
+          "value": "https://eu-assets.i.posthog.com/static/array.js"
+        }
+      ]
+    },
+    {
+      "technology": "Cloudflare",
+      "category": "Infrastructure",
+      "confidence": "medium",
+      "evidence_score": 2,
+      "evidence_sources": [
+        "header"
+      ],
+      "evidence": [
+        {
+          "type": "response_header",
+          "value": "server: cloudflare"
+        }
+      ]
+    }
+  ],
+  "rawEvidence": {
+    "networkRequests": [
+      "https://cal.com/",
+      "https://www.dubcdn.com/analytics/script.js",
+      "https://static.ads-twitter.com/uwt.js",
+      "https://cal.com/api/geolocation",
+      "https://ddwl4m2hdecbv.cloudfront.net/b/46DJ4HWPMG61/46DJ4HWPMG61.js.gz",
+      "https://events.framer.com/script?v=2",
+      "https://framerusercontent.com/images/VBtxxarwLxy4F9dx1Vb8BqA5c.png?width=200&height=260",
+      "https://framerusercontent.com/images/Z3p4UVP4P9YlO5E3zcuqgcm2eI.svg?width=16&height=16",
+      "https://framerusercontent.com/images/nvWtgbT6qL0jMPgV8XT3qW53Kxg.png?width=460&height=460",
+      "https://framerusercontent.com/images/H1nRvSAv2H8JOWnvWasdY8GfJk.png?width=400&height=400",
+      "https://framerusercontent.com/images/5KklQVfPBoD0Xf3cuy1WcGxCw.webp?scale-down-to=512&width=800&height=800",
+      "https://framerusercontent.com/images/IyzG5rqwPLXV8NNtFwgckXyntTA.png?width=321&height=321",
+      "https://framerusercontent.com/images/3gwUUSoHutYvSzmTskTjdDcOuM.jpeg?width=500&height=500",
+      "https://framerusercontent.com/images/eQS8Ay6dIW0XZMSZBZAk52ZKL0w.png?scale-down-to=512&width=2000&height=2000",
+      "https://framerusercontent.com/images/6tTbkXggWgQCAJ4DO2QEdXXmgM.svg",
+      "https://framerusercontent.com/images/11KSGbIZoRSg4pjdnUoif6MKHI.svg",
+      "https://framerusercontent.com/images/IEmmDa5bGzcAJaHMdko76VRYY.svg?width=34&height=35",
+      "https://cal.openstatus.dev/badge/v2",
+      "https://framerusercontent.com/images/fDjwgN51X2kCLLDKuUWCxwc6nII.svg?width=20&height=20",
+      "https://framerusercontent.com/images/zYqPkDnkdalTdsHE8JQCytD438.svg?width=19&height=20",
+      "https://framerusercontent.com/images/b9HG87r2s9nECz9tHl6RcjTxXE.svg?width=250&height=249",
+      "https://framerusercontent.com/images/hfSnSBMT7vWxLcKWzCVizBzs5c.svg?width=20&height=20",
+      "https://framerusercontent.com/images/d5qOnA0SH3sQEvpFDheBgSKJDkc.svg?width=20&height=20",
+      "https://framerusercontent.com/images/rDvHviRgf75KRsnhf7GukFY.svg?width=20&height=20",
+      "https://framerusercontent.com/images/AmmyNGWW2bLfDj5MMe9uVy3TT0.svg?width=20&height=20",
+      "https://framerusercontent.com/images/BihejtaehEHBHQEXgMcIudhKKp0.png?width=265&height=314",
+      "https://framerusercontent.com/images/aXxgHMCxbnBWku8jq0lXGA7bfc.svg?width=162&height=81",
+      "https://framerusercontent.com/images/SSPYlhuS6JVtxGrJEt7qIAsiUA.svg?width=162&height=81",
+      "https://framerusercontent.com/sites/3nD48sbvLWIxKbF7A73bty/rolldown-runtime.Dh6celcD.mjs",
+      "https://framerusercontent.com/sites/3nD48sbvLWIxKbF7A73bty/react.DtujDRE0.mjs",
+      "https://framerusercontent.com/sites/3nD48sbvLWIxKbF7A73bty/framer.DRv7aRxO.mjs",
+      "https://framerusercontent.com/sites/3nD48sbvLWIxKbF7A73bty/motion.BDgQ6Iom.mjs",
+      "https://framerusercontent.com/sites/3nD48sbvLWIxKbF7A73bty/8MXjcuXsKg17u51Vi-8rIIryds-bko5IY2SDD608nYs.Dto8Zd8y.mjs",
+      "https://framerusercontent.com/sites/3nD48sbvLWIxKbF7A73bty/shared.D-HGvNTV.mjs",
+      "https://framerusercontent.com/sites/3nD48sbvLWIxKbF7A73bty/dZ_npQKKW.C9JKXhxF.mjs",
+      "https://framerusercontent.com/sites/3nD48sbvLWIxKbF7A73bty/HDVo4ShKB.DxFbX6LC.mjs",
+      "https://framerusercontent.com/sites/3nD48sbvLWIxKbF7A73bty/Cookie.Dhu8elxL.mjs",
+      "https://framerusercontent.com/sites/3nD48sbvLWIxKbF7A73bty/store.js@_1.0.DHsQimyZ.mjs",
+      "https://framerusercontent.com/sites/3nD48sbvLWIxKbF7A73bty/R_buOvotf.a-6mavyy.mjs",
+      "https://framerusercontent.com/sites/3nD48sbvLWIxKbF7A73bty/YOO9vA0qC.BdBemaIz.mjs",
+      "https://framerusercontent.com/sites/3nD48sbvLWIxKbF7A73bty/NN2vg35u2.CvZvrfmL.mjs",
+      "https://framerusercontent.com/sites/3nD48sbvLWIxKbF7A73bty/rtYljnXzi.b0qshWBx.mjs",
+      "https://framerusercontent.com/sites/3nD48sbvLWIxKbF7A73bty/azhQdbmXL.CuUAE0Sr.mjs",
+      "https://framerusercontent.com/sites/3nD48sbvLWIxKbF7A73bty/YPLc9wpTZ.CdbVsR7i.mjs",
+      "https://framerusercontent.com/sites/3nD48sbvLWIxKbF7A73bty/K_2wAz8YZ.C5NgpEgf.mjs",
+      "https://framerusercontent.com/sites/3nD48sbvLWIxKbF7A73bty/xxldvfzbS.3JliqvpY.mjs",
+      "https://framerusercontent.com/sites/3nD48sbvLWIxKbF7A73bty/eS1EIo8IE.BMdVVeEm.mjs",
+      "https://framerusercontent.com/sites/3nD48sbvLWIxKbF7A73bty/JvIWsMH9N.CpfZ8mYg.mjs",
+      "https://framerusercontent.com/sites/3nD48sbvLWIxKbF7A73bty/K0ruxax8H.HCaTuBlQ.mjs",
+      "https://framerusercontent.com/sites/3nD48sbvLWIxKbF7A73bty/TBsaJbdHg.Qq7fB95q.mjs",
+      "https://framerusercontent.com/sites/3nD48sbvLWIxKbF7A73bty/uvcDZ16QZ.CH88OlrO.mjs",
+      "https://framerusercontent.com/sites/3nD48sbvLWIxKbF7A73bty/SenjaWidget.DI6mCGaI.mjs",
+      "https://framerusercontent.com/sites/3nD48sbvLWIxKbF7A73bty/dDP84t7HDVRDI3DEj3kwnU6iaz518GC6yVWx1l2s8Yg.DRo7mPcv.mjs",
+      "https://framerusercontent.com/sites/3nD48sbvLWIxKbF7A73bty/script_main.F8N1BWAe.mjs",
+      "https://eu-assets.i.posthog.com/static/array.js",
+      "https://cal.com/api/auth/session",
+      "https://framer.com/edit/beta/init.mjs",
+      "https://framerusercontent.com/assets/s54IhrL41P21N6p7LExqluES5w.woff2",
+      "https://framerusercontent.com/assets/P2duH7wVRqqnKRek7vOcXAA9g.woff2",
+      "https://fonts.gstatic.com/s/calsans/v2/fdN99sWUv3gWqXxqqRBctFs.woff2",
+      "https://framerusercontent.com/assets/UjlFhCnUjxhNfep4oYBPqnEssyo.woff2",
+      "https://framerusercontent.com/assets/yDtI2UI8XcEg1W2je9XPN3Noo.woff2",
+      "https://fonts.gstatic.com/s/robotomono/v31/L0xuDF4xlVMF-BfR8bXMIhJHg45mwgGEFl0_AP2_ROW4.woff2",
+      "https://framerusercontent.com/assets/dcBhZgAFiyqqQO8SkGjomdakHJ8.woff2",
+      "https://framerusercontent.com/assets/vQyevYAyHtARFwPqUzQGpnDs.woff2",
+      "https://framerusercontent.com/assets/yoAzpZteCckGFkoe6BbYQH90ReE.woff2",
+      "https://framerusercontent.com/assets/JnSOH7RupDCN6KVnC1gWkQOKE.woff2",
+      "https://app.framerstatic.com/chunk-GL6GZPCT.mjs",
+      "https://widget.senja.io/widget/6a0c4b74-527a-4058-bded-8a358821c1a0/platform.js",
+      "https://t.co/1/i/adsct?bci=4&dv=Africa%2FJohannesburg%26en-GB%26Google%20Inc.%26Win32%26255%261280%26720%268%2624%261280%26720%260%26na&eci=3&event=%7B%7D&event_id=86977790-2c83-4587-b0b6-f9db4a3209c3&integration=advertiser&p_id=Twitter&p_user_id=0&pl_id=25c364d9-5995-4413-8ad2-e510caf684ca&pt=Cal.com%20%7C%20Scheduling%20Software%20for%20Online%20Bookings&tw_document_href=https%3A%2F%2Fcal.com%2F&tw_iframe_status=0&tw_pid_src=1&twpid=tw.1787825389343.257339384169751852&txn_id=oi9q7&type=javascript&version=2.4.1",
+      "https://analytics.twitter.com/1/i/adsct?bci=4&dv=Africa%2FJohannesburg%26en-GB%26Google%20Inc.%26Win32%26255%261280%26720%268%2624%261280%26720%260%26na&eci=3&event=%7B%7D&event_id=86977790-2c83-4587-b0b6-f9db4a3209c3&integration=advertiser&p_id=Twitter&p_user_id=0&pl_id=25c364d9-5995-4413-8ad2-e510caf684ca&pt=Cal.com%20%7C%20Scheduling%20Software%20for%20Online%20Bookings&tw_document_href=https%3A%2F%2Fcal.com%2F&tw_iframe_status=0&tw_pid_src=1&twpid=tw.1787825389343.257339384169751852&txn_id=oi9q7&type=javascript&version=2.4.1",
+      "https://eu-assets.i.posthog.com/array/phc_jrYSGC4qf6Se7YWQoDHM0xhZGxN1jEdqF5rqyfAqg1/config.js",
+      "https://eu-assets.i.posthog.com/static/1.421.1/dead-clicks-autocapture.js",
+      "https://framerusercontent.com/images/yPGnqYboSnvCWBTbI34z6O2FY.svg?width=24&height=24",
+      "https://framerusercontent.com/images/AUafj9wkmgBuXBrhusy3dfwSXK4.png?width=400&height=400",
+      "https://framerusercontent.com/images/yNOr346oZ3AwtMp7pwd8MHbUeb0.png?width=512&height=477",
+      "https://framerusercontent.com/images/7rFCqyElXGwPLAPymO0KdGsetVw.svg?width=17&height=16",
+      "https://framerusercontent.com/images/Y1enkjNA4iUX0ho613UaOqspkDQ.png?width=320&height=320",
+      "https://framerusercontent.com/images/2uFL5TmA8WQRvj0Ebn4lQiVnC6w.svg?width=32&height=32",
+      "https://framerusercontent.com/images/bETpr23FcycPpDEVRNWUBZp0cY.svg?width=32&height=32",
+      "https://framerusercontent.com/images/KdSgRUeowWQPPaGZY0WatpAGvPs.svg?width=32&height=32",
+      "https://framerusercontent.com/images/qsV5rO9Z0v9AJ5BPcJjI9yPmU.svg?width=32&height=32",
+      "https://framerusercontent.com/images/CvwDyvj84ZrX3hA9nbgUSJoVk.svg?width=32&height=32",
+      "https://framerusercontent.com/images/amoj8RpnfR7ZH3Nk8tdZjI2KC98.svg?width=32&height=32",
+      "https://framerusercontent.com/images/F1l3sikirtoXGzwYTxdJTgX8.svg?width=32&height=32",
+      "https://framerusercontent.com/images/iR8Ynox0KvbXu9AK470dulAO8.svg?width=32&height=32",
+      "https://events.framer.com/anonymous",
+      "https://cdn.senja.io/public/avatars/fc18e5fe-18d2-4d7e-95df-8c4f67e5ebd1.png?width=84&height=84&format=webp",
+      "https://user-images.trustpilot.com/642ee1a5a392540013f5eb7c/73x73.png",
+      "https://framerusercontent.com/assets/GrgcKwrN6d3Uz8EwcLHZxwEfC4.woff2",
+      "https://cdn.senja.io/public/media/7O0hvdQBsKq2yuB1GI3I2xY2.jpeg?width=84&height=84&format=webp",
+      "https://cdn.senja.io/public/media/pZVnodzCx82SOfBmvdqcVocw.jpeg?width=84&height=84&format=webp",
+      "https://user-images.trustpilot.com/64ecc20e24b3c30012b87b22/73x73.png",
+      "https://ph-avatars.imgix.net/3734276/71e278a1-6825-46a2-9f27-29c9b30b5161.jpeg?auto=compress&codec=mozjpeg&cs=strip&auto=format&w=84",
+      "https://ph-avatars.imgix.net/3357771/original.png?auto=compress&codec=mozjpeg&cs=strip&auto=format&w=84",
+      "https://cdn.senja.io/public/media/47XJUsByedCkjKapQZa7x822.jpeg?width=84&height=84&format=webp",
+      "https://user-images.trustpilot.com/65096c57b2758f00110657ae/73x73.png",
+      "https://cdn.senja.io/public/media/vewvi7vyTpudQH2rfLCzNAYt.jpeg?width=84&height=84&format=webp",
+      "https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js",
+      "https://ik.imagekit.io/senja/tr:w-24,f-png/Logos/x-logo_Q29Cxf5Qo.png?updatedAt=1726153505611",
+      "https://ik.imagekit.io/senja/tr:w-28,f-png/Logos/Product_Hunt_Logo_ehjmNNDY1.png?updatedAt=1683237851917",
+      "https://fonts.googleapis.com/css?family=Inter:400,700&display=swap",
+      "https://fonts.gstatic.com/s/inter/v20/UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa1ZL7.woff2",
+      "https://framer.com/edit/beta?framerSiteId=bc7227767b20f032f6b0c5eca6d5f196207f19e615b861e2b14cd0579a235b43&source=cal.com&features=%7B%22editorBarDisableFrameAncestorsSecurity%22%3Afalse%2C%22onPageLocalizationSupport%22%3Atrue%2C%22onPageMoveTool%22%3Atrue%2C%22onPageRichTextBlockSelection%22%3Atrue%7D&loadStart=1787825389237",
+      "https://framerusercontent.com/images/1bvk9THj74PqBkpBJDHFbQS9om4.png?width=64&height=96"
+    ],
+    "responseHeaders": {
+      "cache-control": "private, max-age=0, must-revalidate",
+      "cf-cache-status": "DYNAMIC",
+      "cf-ray": "a31a485d483aae35-DUR",
+      "content-encoding": "br",
+      "content-length": "129326",
+      "content-type": "text/html",
+      "date": "Thu, 27 Aug 2026 10:09:47 GMT",
+      "etag": "\"d5e0e57140ee0e70974ad309f60154a8\"",
+      "last-modified": "Wed, 26 Aug 2026 06:11:25 GMT",
+      "link": "<https://framerusercontent.com>; rel=\"preconnect\", <https://framerusercontent.com>; rel=\"preconnect\"; crossorigin=\"\"",
+      "server": "cloudflare",
+      "server-timing": "region;desc=\"af-south-1\", cache;desc=\"cached\", ssg-status;desc=\"optimized\", version;desc=\"6443c08\", instance;desc=\"4eeabee\", route;dur=1;desc=\"id=v7M7xdOQx&locale=default\", abtests;dur=1;desc=\"Yoe_8Npvc=XfzD6rVDK\", country;desc=\"ZA\"",
+      "strict-transport-security": "max-age=31536000",
+      "vary": "Accept-Encoding, Accept",
+      "x-content-type-options": "nosniff"
+    },
+    "scripts": [
+      "https://eu-assets.i.posthog.com/static/array.js",
+      "https://ddwl4m2hdecbv.cloudfront.net/b/46DJ4HWPMG61/46DJ4HWPMG61.js.gz",
+      "https://static.ads-twitter.com/uwt.js",
+      "https://www.dubcdn.com/analytics/script.js",
+      "https://widget.senja.io/widget/6a0c4b74-527a-4058-bded-8a358821c1a0/platform.js",
+      "https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js",
+      "https://eu-assets.i.posthog.com/static/1.421.1/dead-clicks-autocapture.js",
+      "https://eu-assets.i.posthog.com/array/phc_jrYSGC4qf6Se7YWQoDHM0xhZGxN1jEdqF5rqyfAqg1/config.js",
+      "https://events.framer.com/script?v=2",
+      "https://framerusercontent.com/sites/3nD48sbvLWIxKbF7A73bty/script_main.F8N1BWAe.mjs"
+    ],
+    "pageData": {
+      "title": "Cal.com | Scheduling Software for Online Bookings",
+      "headings": [
+        "The better way to schedule your meetings",
+        "With us, appointment scheduling is easy",
+        "Connect your calendar",
+        "Cal.com",
+        "Set your availability",
+        "Choose how to meet",
+        "Your all-purpose scheduling app",
+        "Avoid meeting overload",
+        "Stand out with a custom booking link",
+        "Streamline your bookers’ experience",
+        "Reduce no-shows with automated meeting reminders",
+        "Meeting starts in 15 mins",
+        "Booking rescheduled",
+        "New booking confirmed",
+        "…and so much more!",
+        "Accept payments",
+        "Built-in video conferencing",
+        "Short booking links",
+        "Privacy first",
+        "65+ languages",
+        "Easy embeds",
+        "All your favorite apps",
+        "Simple customization",
+        "Don’t just take our word for it",
+        "All your key tools in sync with your meetings",
+        "See why our users love Cal.com",
+        "Frequently asked questions",
+        "Smarter, simpler scheduling"
+      ],
+      "pricingLinks": [
+        {
+          "text": "Pricing",
+          "href": "https://cal.com/pricing"
+        },
+        {
+          "text": "Pricing",
+          "href": "https://cal.com/pricing"
+        }
+      ],
+      "bodyTextSnippet": "Solutions Enterprise Cal.ai Developer Resources Pricing Sign in Get started Cal.com launches v6.8 The better way to schedule your meetings A fully customizable scheduling software for individuals, businesses taking calls and developers building scheduling platforms where users meet users. Sign up with Google Sign up with email No credit card required Ethan Taylor Academic Counseling Virtual counseling session for university students to discuss academic progress and well-being. 15m 30m 45m 1h Google Meet America/California May 2025 SUN MON TUE WED THU FRI SAT 0 15 15 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 0 Trusted by fast-growing companies around the world How it works With us, appointment scheduling is easy Effortless scheduling for business and individuals, powerful solutions for fast-growing modern companies. Get started Book a demo 01 Connect your calendar We'll handle all the cross-referencing, so you don't have to worry about double bookings. Cal.com 02 Set your availability Want to block off weekends? Set up any buffers? We make that easy. Mon 8:30 am 5:00 pm Tue 9:00 am 6:30 pm Wed 10:00 am 7:00 pm 03 Choose how to meet It could be a video chat, phone call, or a walk in the park! Benefits Your all-purpose scheduling app Discover a variety of our advanced features. Unlimited and free for individuals. Get started Book a demo Avoid meeting overload Only get booked when you want to. Set daily, weekly or monthly limits and add buffers around your events to allow you to focus or take a break. Notice and buffers Minimum notice Buffer before event 15 mins Buffer after event 15 mins Time-slot intervals 15 mins Stand out with a custom booking link Customize your booking link so it’s short and easy to remember for your bookers. No more long, complicated links one can easily forget. cal.com/peer German Lessons Let's learn German! 15m 30m 45m 1h Google Meet Europe/Hamburg Streamline your bookers’ experience Let your bookers overlay their calendar, receive booking confirmations via text or email, get events added to their calendar, and allow them to reschedule with ease. May 2025 Overlay my calendar 12h 24h Mon 04 Tue 05 Wed 06 Thu 07 Fri 08 Sat 09 Sun 10 Lunch date 12 PM - 1 PM Coffee 11 AM - 12 PM Design conference 1 PM - 3 PM Design conference 12 PM - 2 PM Hiring call 11:30 AM - 1 PM Company meeting 11 AM - 2:30 PM Reduce no-shows with automated meeting reminders Easily send sms or meeting reminder emails about bookings, and send automated follow-ups to gather any relevant information before the meeting. Meeting starts in 15 mins Your next meeting is starting in 15 mins 15 mins Booking rescheduled Melissa Smith has rescheduled the meeting to Wed, 25 Mar 15:00. 30 mins New booking confirmed James Oliver booked a 30min discovery call with you. Just now …and so much more! Accept payments Accept payments You can monetize your bookings through our Stripe integration. Built-in video conferencing Built-in video conferencing Cal Video is our in-house video conferencing platform. Short booking links Short booking links Each booking link can be short which makes it easy to remember. Privacy first Privacy first Our solution has been designed to keep your information private and protected. 65+ languages 65+ languages Talk to anyone around the globe with support for 65+ languages. Easy embeds Easy embeds Embed your booking page anywhere with just a few clicks. All your favorite apps All your favorite apps Effortlessly integrate with your favorite popular apps. Simple customization Simple customization Easily customize your booking page to fit your brand. Testimonials Don’t just take our word for it Our users are our best ambassadors. Discover why we're the top choice for scheduling meetings. \"Just gave it a go and it's definitely the easiest meeting I've ever scheduled!\" Aria Minaei CEO, Theatre.JS \"I finally made the move to Cal.com after I couldn't find how to edit events in the Calendly dashboard.\" Ant Wilson Co-Founder & CTO, Supabase \"At Navi, protecting personal health information is a non-negotiable, so choosing Cal.com for scheduling just makes sense.\" Micah Friedland CEO & Founder, Navi \"More elegant than Calendly, more open than SavvyCal, Cal.com works and it feels just right.\" Flo Merian Product Marketing, Mintlify I think Cal.com has a very good chance of creating a new category around being both great and well designed.\" Guillermo Rauch CEO, Vercel \"I just migrated from Calendly to Cal.com.\" Kent C. Dodds Founder of EpicWeb.dev \"Just gave it a go and it's definitely the easiest meeting I've ever scheduled!\" Aria Minaei CEO, Theatre.JS App store All your key tools in sync with your meetings Connects to Slack, Salesforce, and 100+ more. Bookings show up where your team already works. Get started Explore apps Wall of love See why our users love Cal.com Read the impact we've had from those who matter most - our customers. Get started Book a demo FAQ Frequently asked questions These are some of our most frequently asked questions. Talk to sales Get started How much does Cal.com cost and what's included in each plan? Cal.com's free plan includes unlimited event types, calendar syncing, workflow automation, Stripe payments, and Cal Video, making it one of the most fully featured free scheduling tools on the market. For teams, the booking software scales across four tiers. Teams ($16/user/month) adds round-robin scheduling, shared availability, and team workflows, making it ideal scheduling software for small business. Organizations ($37/user/month) include org-wide admin controls and centralized management for larger companies using Cal.com’s scheduler as their meeting scheduling software. Enterprise offers custom pricing with priority support, dedicated database, and higher SLAs. This is crucial for industries that require a secure online booking system. What are Cal.com's pricing plans, and is it good scheduling software for small businesses? Cal.com is one of the best options for scheduling software for small business thanks to a free tier that includes unlimited event types, workflow automation, Stripe payments, and Cal Video, making it the most generous free scheduling tool available. Small businesses needing booking software with team features can upgrade to Teams at $16/user/month for round-robin scheduling and shared availability. It also works as an online booking system for small businesses with embeddable booking pages. Organizations ($37/user/month) adds admin controls for mid-size to large companies. Enterprise offers custom pricing with priority support, dedicated database, and higher SLAs. The enterprise plan features are crucial for industries that require a secure meeting scheduling software with a secure database. Can Cal.com be used as scheduling software for Healthcare, Sales, Support, and B2B teams? Yes. Cal.com adapts as scheduling software across industries and team structures. Healthcare practices use it as patient scheduling software and physician scheduling software with HIPAA compliance, SOC 2 Type II certification, and encrypted storage. Thanks to the flexibility of Cal.com it is widely used by sales teams across industries. Support teams use the round-robin scheduling feature of Cal.com to fairly distribute workload among team members. For B2B sales teams, Cal.com works as booking software with attribute-based routing, round-robin lead distribution, and CRM updates in Salesforce or HubSpot on every booking. It's a complete automated scheduling system, online booking system, and scheduler for any vertical. Trusted by fast-growing companies around the world Smarter, simpler scheduling Get started Talk to sales Cal.com® and Cal® are registered trademarks of Cal.com, Inc. All rights reserved. Our mission is to connect a billion people by 2031 through calendar scheduling. Select Language English German (Germany) French (France) Dutch (Netherlands) Portuguese (Portugal) Spanish (Spain) Italian (Italy) English Downloads Android Chrome Safari Edge Firefox macOS Windows Linux Need Help? support@cal.com or visit cal.com/help. Solutions iOS/Android App Self-hosted Pricing Docs Cal.ai - AI Phone Agent Enterprise Integrate Cal.com Routing Cal.com Atoms Desktop App FAQ Enterprise API GitHub Docker Use Cases Sales Marketing Talent Acquisition Customer Support Higher Education Telehealth Professional Services Hiring Marketplace Human Resources Tutoring C-suite Law Resources Affiliate Program Help Docs Blog Cal Fonts Teams Embed Recurring events Developers OOO Workflows Instant Meetings App Store Requires confirmation Payments Video Conferencing Cal.com vs Calendly Company Jobs About Open Startup Support Privacy Terms License Security Changelog Get a demo Talk to sales"
+    }
+  }
+}

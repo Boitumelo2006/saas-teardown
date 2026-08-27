@@ -1,0 +1,37 @@
+[
+  {
+    "name": "Stripe",
+    "category": "Payments",
+    "rules": { "network": ["js\\.stripe\\.com", "api\\.stripe\\.com"] }
+  },
+  {
+    "name": "PostHog",
+    "category": "Analytics",
+    "rules": { "network": ["app\\.posthog\\.com", "cdn\\.posthog\\.com", "posthog\\.com"] }
+  },
+  {
+    "name": "Segment",
+    "category": "Analytics",
+    "rules": { "network": ["api\\.segment\\.io", "cdn\\.segment\\.com"] }
+  },
+  {
+    "name": "Intercom",
+    "category": "Customer Support",
+    "rules": { "network": ["widget\\.intercom\\.io", "js\\.intercomcdn\\.com"] }
+  },
+  {
+    "name": "Next.js",
+    "category": "Frontend Framework",
+    "rules": { "network": ["_next/static", "_next/data"] }
+  },
+  {
+    "name": "Vercel",
+    "category": "Hosting & Infrastructure",
+    "rules": { "headers": { "server": "vercel" } }
+  },
+  {
+    "name": "Cloudflare",
+    "category": "Infrastructure",
+    "rules": { "headers": { "server": "cloudflare" } }
+  }
+]

@@ -1,0 +1,26 @@
+[
+  {
+    "name": "cal",
+    "url": "https://cal.com"
+  },
+  {
+    "name": "linear",
+    "url": "https://linear.app"
+  },
+  {
+    "name": "posthog",
+    "url": "https://posthog.com"
+  },
+  {
+    "name": "notion",
+    "url": "https://www.notion.com"
+  },
+  {
+    "name": "vercel",
+    "url": "https://vercel.com"
+  },
+  {
+    "name": "localcan",
+    "url": "https://www.localcan.com/"
+  }
+]

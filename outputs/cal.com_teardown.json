@@ -1,0 +1,54 @@
+{
+  "company_name": "Cal.com",
+  "value_proposition": "A fully customizable scheduling software for individuals, businesses taking calls and developers building scheduling platforms where users meet users.",
+  "observed_facts": [
+    {
+      "fact": "Cal.com offers a free plan that includes unlimited event types, calendar syncing, workflow automation, Stripe payments, and Cal Video.",
+      "evidence": "Cal.com's free plan includes unlimited event types, calendar syncing, workflow automation, Stripe payments, and Cal Video, making it one of the most fully featured free scheduling tools on the market."
+    },
+    {
+      "fact": "The Teams plan is priced at $16 per user per month.",
+      "evidence": "Teams ($16/user/month) adds round-robin scheduling, shared availability, and team workflows, making it ideal scheduling software for small business."
+    },
+    {
+      "fact": "The Organizations plan is priced at $37 per user per month.",
+      "evidence": "Organizations ($37/user/month) include org-wide admin controls and centralized management for larger companies using Cal.com’s scheduler as their meeting scheduling software."
+    }
+  ],
+  "pricing_plans": [
+    {
+      "plan": "Free",
+      "price": "$0/month",
+      "features": []
+    },
+    {
+      "plan": "Teams",
+      "price": "$16/user/month",
+      "features": []
+    },
+    {
+      "plan": "Organizations",
+      "price": "$37/user/month",
+      "features": []
+    },
+    {
+      "plan": "Enterprise",
+      "price": "Custom pricing",
+      "features": []
+    }
+  ],
+  "detected_technologies": [
+    {
+      "name": "PostHog",
+      "category": "Analytics"
+    },
+    {
+      "name": "Cloudflare",
+      "category": "Infrastructure"
+    }
+  ],
+  "analytical_insights": [
+    "Cal.com positions itself as a developer-friendly and fully customizable alternative to traditional scheduling tools like Calendly.",
+    "The product offers a multi-tiered pricing model targeting individuals up to enterprise organizations with strict security requirements."
+  ]
+}

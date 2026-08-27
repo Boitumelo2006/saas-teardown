@@ -1,0 +1,46 @@
+{
+  "company_name": "localcan",
+  "value_proposition": "Put localhost on a stable Public URL to test webhooks or share previews without deploying, offering flat pricing with no usage bills.",
+  "observed_facts": [
+    {
+      "fact": "LocalCan offers a free tier for ephemeral Public URLs and local development.",
+      "evidence": "Free $0 For ephemeral Public URLs and local development Sign Up Free"
+    },
+    {
+      "fact": "The service provides an MCP server for AI agents like Claude Code, Codex, and Cursor.",
+      "evidence": "MCP server for AI agents Claude Code / Codex / Cursor"
+    }
+  ],
+  "pricing_plans": [
+    {
+      "plan": "Free",
+      "price": "$0"
+    },
+    {
+      "plan": "Solo",
+      "price": "$8 /month"
+    },
+    {
+      "plan": "Pro",
+      "price": "$12 /month"
+    },
+    {
+      "plan": "Teams",
+      "price": "$45 /month"
+    },
+    {
+      "plan": "Lifetime License",
+      "price": "$189 /once"
+    }
+  ],
+  "detected_technologies": [
+    {
+      "name": "Next.js",
+      "category": "Frontend Framework"
+    }
+  ],
+  "analytical_insights": [
+    "LocalCan positions itself as an ngrok and Cloudflare Tunnel alternative by emphasizing flat-rate pricing instead of metered usage bills.",
+    "The platform heavily markets integration with modern AI coding assistants and agents via MCP."
+  ]
+}
