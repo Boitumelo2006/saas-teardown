@@ -19,7 +19,17 @@ const PORT = process.env.PORT || 3000;
 
 app.use(cors());
 app.use(express.json());
-app.use('/outputs', express.static(outputsDir));
+
+// Serve static reports directly with attachment download headers
+app.use('/outputs', express.static(outputsDir, {
+  setHeaders: (res, filePath) => {
+    if (filePath.endsWith('.pdf')) {
+      const fileName = path.basename(filePath);
+      res.setHeader('Content-Type', 'application/pdf');
+      res.setHeader('Content-Disposition', `attachment; filename="${fileName}"`);
+    }
+  }
+}));
 
 app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', service: 'saas-teardown-api', timestamp: new Date().toISOString() });
