@@ -15,7 +15,7 @@ const PORT = process.env.PORT || 3000;
 app.use(cors());
 app.use(express.json());
 
-// Serve static PDF and HTML reports directly
+// Serve static reports directly
 app.use('/outputs', express.static(path.join(projectRoot, 'outputs')));
 
 /**
@@ -35,11 +35,11 @@ app.get('/', (req, res) => {
 /**
  * Teardown API Endpoint for Lovable / Web UI
  * POST /api/teardown
- * Body: { "url": "stripe.com", "format": "json", "force": false }
+ * Body: { "url": "stripe.com", "force": false }
  */
 app.post('/api/teardown', async (req, res) => {
   try {
-    const { url, name, format = 'json', force = false } = req.body;
+    const { url, name, format, force = false } = req.body;
 
     if (!url) {
       return res.status(400).json({ error: 'Missing required parameter: url' });
@@ -53,10 +53,15 @@ app.post('/api/teardown', async (req, res) => {
     const domainName = new URL(targetUrl).hostname.replace(/^www\./, '');
     const siteName = name || domainName;
 
+    // Default export format to 'pdf' if omitted or set to 'json'
+    const exportFormat = (!format || format.toLowerCase() === 'json') 
+      ? 'pdf' 
+      : format.toLowerCase();
+
     // Run core engine pipeline
     const report = await teardownSite(
       { name: siteName, url: targetUrl },
-      { format, force }
+      { format: exportFormat, force }
     );
 
     if (!report) {
@@ -66,11 +71,8 @@ app.post('/api/teardown', async (req, res) => {
     const protocol = req.headers['x-forwarded-proto'] || req.protocol;
     const host = req.get('host');
 
-    // Build downloadable output link when requested
-    const fileExtension = format.toLowerCase();
-    const downloadUrl = (format === 'pdf' || format === 'html')
-      ? `${protocol}://${host}/outputs/${siteName}.${fileExtension}`
-      : null;
+    // Build downloadable public output link
+    const downloadUrl = `${protocol}://${host}/outputs/${siteName}.${exportFormat}`;
 
     return res.json({
       success: true,
