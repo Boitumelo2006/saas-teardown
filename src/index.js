@@ -136,7 +136,8 @@ export async function teardownSite(site, options = {}) {
     console.log(`💾 Saved Report to: ${reportPath}\n`);
   } else {
     try {
-      const exportedPath = await exportReport(finalReport, { format });
+      // Pass outputDir down to exportReport so files write to projectRoot/outputs
+      const exportedPath = await exportReport(finalReport, { format, outdir: outputDir, outputDir });
       console.log(`📄 Generated ${format.toUpperCase()} Report: ${exportedPath}\n`);
     } catch (exportErr) {
       console.error(`❌ Exporter Failed: ${exportErr.message}\n`);
