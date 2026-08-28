@@ -37,7 +37,7 @@ function normalizeUrl(input) {
 }
 
 /**
- * Normalizes Gemini/Scraper raw output into a clean schema for export engines.
+ * Normalizes Gemini/Scraper raw output into a clean schema for export engines and API consumption.
  */
 function formatReportPayload(site, rawOutput, reportData) {
   return {
@@ -49,6 +49,12 @@ function formatReportPayload(site, rawOutput, reportData) {
     keyInsights: reportData?.keyInsights || reportData?.insights || [
       `Crawl completed with latency of ${((rawOutput?.crawl?.latencyMs || 0) / 1000).toFixed(1)}s.`,
       `Identified ${rawOutput?.detectedTechnologies?.length || 0} client-side fingerprints.`
+    ],
+    recommendations: reportData?.recommendations || [
+      "No specific recommendations extracted from landing page data."
+    ],
+    competitors: reportData?.competitors || [
+      "Direct competitors not automatically identified."
     ]
   };
 }
@@ -184,7 +190,7 @@ program
       const jsonContent = await fs.readFile(path.join(projectRoot, 'test-sites.json'), 'utf-8');
       const testSites = JSON.parse(jsonContent);
 
-      console.log(`\nSaaS Teardown Pipeline (Powered by gemini-3.5-flash-lite)`);
+      console.log(`\nSaaS Teardown Pipeline`);
       console.log(`Running batch job for ${testSites.length} targets...\n`);
 
       for (const site of testSites) {

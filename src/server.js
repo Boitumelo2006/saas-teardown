@@ -26,9 +26,16 @@ app.get('/api/health', (req, res) => {
 });
 
 /**
+ * Root Health Check for Browser visits
+ */
+app.get('/', (req, res) => {
+  res.json({ status: 'active', message: 'SaaS Teardown API is running live on Railway.' });
+});
+
+/**
  * Teardown API Endpoint for Lovable / Web UI
  * POST /api/teardown
- * Body: { "url": "stripe.com", "format": "pdf", "force": false }
+ * Body: { "url": "stripe.com", "format": "json", "force": false }
  */
 app.post('/api/teardown', async (req, res) => {
   try {
@@ -56,9 +63,13 @@ app.post('/api/teardown', async (req, res) => {
       return res.status(500).json({ error: 'Analysis failed during crawling or LLM synthesis.' });
     }
 
+    const protocol = req.headers['x-forwarded-proto'] || req.protocol;
+    const host = req.get('host');
+
+    // Build downloadable output link when requested
     const fileExtension = format.toLowerCase();
-    const downloadUrl = format !== 'json' 
-      ? `${req.protocol}://${req.get('host')}/outputs/teardown-${siteName}.${fileExtension}`
+    const downloadUrl = (format === 'pdf' || format === 'html')
+      ? `${protocol}://${host}/outputs/${siteName}.${fileExtension}`
       : null;
 
     return res.json({
