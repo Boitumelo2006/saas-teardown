@@ -27,15 +27,42 @@ async function callGeminiWithRetry(params, retries = 3, delay = 1000) {
 }
 
 /**
+ * Formats subpages into clean context snippets for LLM synthesis.
+ */
+function formatSubpages(subpages = []) {
+  const validSubpages = subpages.filter((s) => s.success);
+  if (validSubpages.length === 0) return 'No secondary subpages crawled.';
+
+  return validSubpages
+    .map(
+      (s) =>
+        `--- Subpage: ${s.url} (${s.title || 'Untitled'}) ---\n` +
+        `Headings: ${s.headings?.slice(0, 5).join(' | ') || 'None'}\n` +
+        `Snippet: ${s.bodyTextSnippet?.substring(0, 2500) || 'None'}`
+    )
+    .join('\n\n');
+}
+
+/**
  * Analyzes a single site's scraped payload with pre-sanitization.
  */
 export async function analyzeSiteData(siteName, rawOutput) {
-  const model = process.env.GEMINI_MODEL || 'gemini-3.1-flash-lite';
+  const model = process.env.GEMINI_MODEL || 'gemini-2.5-flash';
+
+  let rawDataToSanitize = rawOutput;
+  let subpagesContext = 'No secondary subpages crawled.';
+
+  // Extract structured subpage data if rawOutput is an object from crawler.js
+  if (typeof rawOutput === 'object' && rawOutput !== null) {
+    if (rawOutput.rawEvidence?.subpages) {
+      subpagesContext = formatSubpages(rawOutput.rawEvidence.subpages);
+    }
+  }
 
   // 1. Sanitize raw scraping input to control token budget & noise
-  const sanitizedInput = typeof rawOutput === 'string' 
-    ? sanitizeScrapedContent(rawOutput)
-    : sanitizeScrapedContent(JSON.stringify(rawOutput));
+  const sanitizedInput = typeof rawDataToSanitize === 'string'
+    ? sanitizeScrapedContent(rawDataToSanitize)
+    : sanitizeScrapedContent(JSON.stringify(rawDataToSanitize));
 
   if (!sanitizedInput) {
     throw new Error(`Scraped content for ${siteName} is empty or unreadable.`);
@@ -43,14 +70,15 @@ export async function analyzeSiteData(siteName, rawOutput) {
 
   const userContent = JSON.stringify({
     siteName,
-    rawData: sanitizedInput,
+    primaryLandingData: sanitizedInput,
+    subpagesEvidence: subpagesContext,
   });
 
-  const systemInstruction = `You are an expert SaaS competitive intelligence analyst. Analyze the scraped web data and technology stack for the requested target site.
+  const systemInstruction = `You are an expert SaaS competitive intelligence analyst. Analyze the scraped web data, subpage evidence (e.g. pricing, about, features), and technology stack for the requested target site.
 
 CRITICAL INSTRUCTIONS:
-1. Generate a comprehensive executive business summary covering value proposition, monetization strategy, and target persona.
-2. Extract or infer key technical/architectural insights, actionable growth recommendations, and direct market competitors based on the scraped landing page content.
+1. Generate a comprehensive executive business summary covering value proposition, monetization strategy, and target persona using both primary landing page content and discovered subpage evidence.
+2. Extract or infer key technical/architectural insights, actionable growth recommendations, and direct market competitors based on all scraped evidence.
 3. Keep the JSON responses concise, high-value, and accurate to the scraped evidence.`;
 
   const response = await callGeminiWithRetry({
