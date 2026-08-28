@@ -3,6 +3,7 @@ import cors from 'cors';
 import path from 'path';
 import fs from 'fs';
 import { fileURLToPath } from 'url';
+import rateLimit from 'express-rate-limit';
 import { teardownSite } from './index.js';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -10,12 +11,50 @@ const __dirname = path.dirname(__filename);
 const projectRoot = path.join(__dirname, '..');
 const outputsDir = path.join(projectRoot, 'outputs');
 
+// Ensure outputs folder exists on server startup
 if (!fs.existsSync(outputsDir)) {
   fs.mkdirSync(outputsDir, { recursive: true });
 }
 
+/**
+ * Cleanup routine: deletes report files older than 24 hours to preserve disk space
+ */
+const cleanupOldOutputs = () => {
+  const maxAgeMs = 24 * 60 * 60 * 1000; // 24 hours
+  const now = Date.now();
+
+  fs.readdir(outputsDir, (err, files) => {
+    if (err) return console.error(`[Cleanup Error]: ${err.message}`);
+
+    files.forEach((file) => {
+      const filePath = path.join(outputsDir, file);
+      fs.stat(filePath, (statErr, stats) => {
+        if (statErr) return;
+
+        if (now - stats.mtimeMs > maxAgeMs) {
+          fs.unlink(filePath, (unlinkErr) => {
+            if (!unlinkErr) console.log(`🧹 Purged stale report: ${file}`);
+          });
+        }
+      });
+    });
+  });
+};
+
+// Run stale file cleanup every 6 hours
+setInterval(cleanupOldOutputs, 6 * 60 * 60 * 1000);
+
 const app = express();
 const PORT = process.env.PORT || 3000;
+
+// Rate limiter: Max 10 teardown requests per 15 minutes per IP
+const teardownLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 10,
+  message: { error: 'Too many teardown requests from this IP. Please try again in 15 minutes.' },
+  standardHeaders: true,
+  legacyHeaders: false,
+});
 
 app.use(cors());
 app.use(express.json());
@@ -31,15 +70,25 @@ app.use('/outputs', express.static(outputsDir, {
   }
 }));
 
+/**
+ * Health Check Endpoint
+ */
 app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', service: 'saas-teardown-api', timestamp: new Date().toISOString() });
 });
 
+/**
+ * Root Health Check for Browser visits
+ */
 app.get('/', (req, res) => {
   res.json({ status: 'active', message: 'SaaS Teardown API is running live on Railway.' });
 });
 
-app.post('/api/teardown', async (req, res) => {
+/**
+ * Teardown API Endpoint
+ * POST /api/teardown
+ */
+app.post('/api/teardown', teardownLimiter, async (req, res) => {
   try {
     const { url, name, format, force = false } = req.body;
 
@@ -75,9 +124,8 @@ app.post('/api/teardown', async (req, res) => {
     // Dynamic file detection inside outputsDir
     const files = fs.readdirSync(outputsDir);
     const targetExtension = `.${exportFormat}`;
-    
-    // Find file matching siteName base name
     const cleanBaseName = siteName.toLowerCase().replace(/[^a-z0-9]/g, '');
+
     const matchedFile = files.find(f => {
       const cleanFileName = f.toLowerCase().replace(/[^a-z0-9]/g, '');
       return f.endsWith(targetExtension) && cleanFileName.includes(cleanBaseName);
