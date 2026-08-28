@@ -6,30 +6,13 @@ import { sanitizeScrapedContent } from './cleaner.js';
 
 const ai = new GoogleGenAI();
 
-// Zod Schema for output validation
+// Zod Schema for output validation matching dashboard expectations
 const SiteAnalysisSchema = z.object({
-  company_name: z.string().default('Unknown Company'),
-  value_proposition: z.string().default('N/A'),
-  observed_facts: z.array(
-    z.object({
-      fact: z.string(),
-      evidence: z.string(),
-    })
-  ).default([]),
-  pricing_plans: z.array(
-    z.object({
-      plan: z.string(),
-      price: z.string().optional().default('Contact for pricing'),
-      features: z.array(z.string()).default([]),
-    })
-  ).default([]),
-  detected_technologies: z.array(
-    z.object({
-      name: z.string(),
-      category: z.string().optional().default('Uncategorized'),
-    })
-  ).default([]),
-  analytical_insights: z.array(z.string()).default([]),
+  businessSummary: z.string().default('N/A'),
+  techStack: z.array(z.string()).default([]),
+  keyInsights: z.array(z.string()).default([]),
+  recommendations: z.array(z.string()).default([]),
+  competitors: z.array(z.string()).default([]),
 });
 
 async function callGeminiWithRetry(params, retries = 3, delay = 1000) {
@@ -47,7 +30,7 @@ async function callGeminiWithRetry(params, retries = 3, delay = 1000) {
  * Analyzes a single site's scraped payload with pre-sanitization.
  */
 export async function analyzeSiteData(siteName, rawOutput) {
-  const model = process.env.GEMINI_MODEL || 'gemini-3.5-flash-lite';
+  const model = process.env.GEMINI_MODEL || 'gemini-3.1-flash-lite';
 
   // 1. Sanitize raw scraping input to control token budget & noise
   const sanitizedInput = typeof rawOutput === 'string' 
@@ -63,15 +46,12 @@ export async function analyzeSiteData(siteName, rawOutput) {
     rawData: sanitizedInput,
   });
 
-  const systemInstruction = `You are an exceptionally accurate SaaS competitive intelligence and site data extraction engine.
+  const systemInstruction = `You are an expert SaaS competitive intelligence analyst. Analyze the scraped web data and technology stack for the requested target site.
 
-CRITICAL GROUNDING INSTRUCTIONS FOR EVIDENCE:
-1. Every 'evidence' string inside 'observed_facts' MUST be an exact, word-for-word, verbatim excerpt from the provided raw site text.
-2. Never summarize, rephrase, correct, or clean up punctuation in the 'evidence' field.
-3. If an accurate verbatim excerpt cannot be extracted directly, do not invent or rephrase one.
-
-CRITICAL INSTRUCTIONS FOR TECHNOLOGIES:
-1. Only extract technologies that are explicitly listed or verified within the raw input payload. Do not invent or infer unverified stack components.`;
+CRITICAL INSTRUCTIONS:
+1. Generate a comprehensive executive business summary covering value proposition, monetization strategy, and target persona.
+2. Extract or infer key technical/architectural insights, actionable growth recommendations, and direct market competitors based on the scraped landing page content.
+3. Keep the JSON responses concise, high-value, and accurate to the scraped evidence.`;
 
   const response = await callGeminiWithRetry({
     model,
@@ -82,57 +62,30 @@ CRITICAL INSTRUCTIONS FOR TECHNOLOGIES:
       responseSchema: {
         type: 'OBJECT',
         properties: {
-          company_name: { type: 'STRING' },
-          value_proposition: { type: 'STRING' },
-          observed_facts: {
+          businessSummary: { type: 'STRING' },
+          techStack: {
             type: 'ARRAY',
-            items: {
-              type: 'OBJECT',
-              properties: {
-                fact: { type: 'STRING' },
-                evidence: { type: 'STRING' },
-              },
-              required: ['fact', 'evidence'],
-            },
+            items: { type: 'STRING' },
           },
-          pricing_plans: {
+          keyInsights: {
             type: 'ARRAY',
-            items: {
-              type: 'OBJECT',
-              properties: {
-                plan: { type: 'STRING' },
-                price: { type: 'STRING' },
-                features: {
-                  type: 'ARRAY',
-                  items: { type: 'STRING' },
-                },
-              },
-              required: ['plan'],
-            },
+            items: { type: 'STRING' },
           },
-          detected_technologies: {
+          recommendations: {
             type: 'ARRAY',
-            items: {
-              type: 'OBJECT',
-              properties: {
-                name: { type: 'STRING' },
-                category: { type: 'STRING' },
-              },
-              required: ['name'],
-            },
+            items: { type: 'STRING' },
           },
-          analytical_insights: {
+          competitors: {
             type: 'ARRAY',
             items: { type: 'STRING' },
           },
         },
         required: [
-          'company_name',
-          'value_proposition',
-          'observed_facts',
-          'pricing_plans',
-          'detected_technologies',
-          'analytical_insights',
+          'businessSummary',
+          'techStack',
+          'keyInsights',
+          'recommendations',
+          'competitors',
         ],
       },
     },
