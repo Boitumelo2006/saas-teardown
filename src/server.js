@@ -1,12 +1,19 @@
 import express from 'express';
 import cors from 'cors';
 import path from 'path';
+import fs from 'fs';
 import { fileURLToPath } from 'url';
 import { teardownSite } from './index.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const projectRoot = path.join(__dirname, '..');
+const outputsDir = path.join(projectRoot, 'outputs');
+
+// Ensure the outputs directory exists on server startup
+if (!fs.existsSync(outputsDir)) {
+  fs.mkdirSync(outputsDir, { recursive: true });
+}
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -16,7 +23,7 @@ app.use(cors());
 app.use(express.json());
 
 // Serve static reports directly
-app.use('/outputs', express.static(path.join(projectRoot, 'outputs')));
+app.use('/outputs', express.static(outputsDir));
 
 /**
  * Health Check Endpoint
