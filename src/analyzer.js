@@ -6,10 +6,32 @@ import { sanitizeScrapedContent } from './cleaner.js';
 
 const ai = new GoogleGenAI();
 
-// Zod Schema for output validation matching dashboard expectations
+// Enhanced Zod Schema for executive-grade report validation
 const SiteAnalysisSchema = z.object({
   businessSummary: z.string().default('N/A'),
+  valuePropositions: z.array(z.string()).default([]),
+  targetPersona: z.object({
+    primaryAudience: z.string().default('N/A'),
+    idealCustomerProfile: z.string().default('N/A'),
+    keyPainPoints: z.array(z.string()).default([]),
+  }),
+  revenueModel: z.object({
+    monetizationType: z.string().default('N/A'),
+    pricingTiers: z.array(z.string()).default([]),
+    estimatedArpu: z.string().default('N/A'),
+  }),
+  swotAnalysis: z.object({
+    strengths: z.array(z.string()).default([]),
+    weaknesses: z.array(z.string()).default([]),
+    opportunities: z.array(z.string()).default([]),
+    threats: z.array(z.string()).default([]),
+  }),
   techStack: z.array(z.string()).default([]),
+  technicalArchitecture: z.object({
+    frontend: z.string().default('N/A'),
+    backendAndAnalytics: z.array(z.string()).default([]),
+    infrastructureInsights: z.string().default('N/A'),
+  }),
   keyInsights: z.array(z.string()).default([]),
   recommendations: z.array(z.string()).default([]),
   competitors: z.array(z.string()).default([]),
@@ -37,8 +59,8 @@ function formatSubpages(subpages = []) {
     .map(
       (s) =>
         `--- Subpage: ${s.url} (${s.title || 'Untitled'}) ---\n` +
-        `Headings: ${s.headings?.slice(0, 5).join(' | ') || 'None'}\n` +
-        `Snippet: ${s.bodyTextSnippet?.substring(0, 2500) || 'None'}`
+        `Headings: ${s.headings?.slice(0, 8).join(' | ') || 'None'}\n` +
+        `Snippet: ${s.bodyTextSnippet?.substring(0, 3500) || 'None'}`
     )
     .join('\n\n');
 }
@@ -52,14 +74,12 @@ export async function analyzeSiteData(siteName, rawOutput) {
   let rawDataToSanitize = rawOutput;
   let subpagesContext = 'No secondary subpages crawled.';
 
-  // Extract structured subpage data if rawOutput is an object from crawler.js
   if (typeof rawOutput === 'object' && rawOutput !== null) {
     if (rawOutput.rawEvidence?.subpages) {
       subpagesContext = formatSubpages(rawOutput.rawEvidence.subpages);
     }
   }
 
-  // 1. Sanitize raw scraping input to control token budget & noise
   const sanitizedInput = typeof rawDataToSanitize === 'string'
     ? sanitizeScrapedContent(rawDataToSanitize)
     : sanitizeScrapedContent(JSON.stringify(rawDataToSanitize));
@@ -74,12 +94,13 @@ export async function analyzeSiteData(siteName, rawOutput) {
     subpagesEvidence: subpagesContext,
   });
 
-  const systemInstruction = `You are an expert SaaS competitive intelligence analyst. Analyze the scraped web data, subpage evidence (e.g. pricing, about, features), and technology stack for the requested target site.
+  const systemInstruction = `You are a world-class SaaS competitive intelligence analyst preparing an executive-grade teardown report for investors and product leaders. Analyze the provided scraped web data and subpages to output an in-depth, comprehensive breakdown.
 
 CRITICAL INSTRUCTIONS:
-1. Generate a comprehensive executive business summary covering value proposition, monetization strategy, and target persona using both primary landing page content and discovered subpage evidence.
-2. Extract or infer key technical/architectural insights, actionable growth recommendations, and direct market competitors based on all scraped evidence.
-3. Keep the JSON responses concise, high-value, and accurate to the scraped evidence.`;
+1. Provide deep, granular analysis across all requested dimensions (SWOT, Revenue Models, Persona Breakdown, Technical Stack). Avoid vague generic statements.
+2. Under "revenueModel", extract specific tier prices, billing cycles, or transaction rates if visible in the scraped text.
+3. Under "swotAnalysis", identify strategic SaaS positioning strengths, weaknesses, growth opportunities, and market threats.
+4. Synthesize all subpage evidence (pricing, plans, support) into clear, actionable executive insights.`;
 
   const response = await callGeminiWithRetry({
     model,
@@ -91,9 +112,56 @@ CRITICAL INSTRUCTIONS:
         type: 'OBJECT',
         properties: {
           businessSummary: { type: 'STRING' },
+          valuePropositions: {
+            type: 'ARRAY',
+            items: { type: 'STRING' },
+          },
+          targetPersona: {
+            type: 'OBJECT',
+            properties: {
+              primaryAudience: { type: 'STRING' },
+              idealCustomerProfile: { type: 'STRING' },
+              keyPainPoints: {
+                type: 'ARRAY',
+                items: { type: 'STRING' },
+              },
+            },
+            required: ['primaryAudience', 'idealCustomerProfile', 'keyPainPoints'],
+          },
+          revenueModel: {
+            type: 'OBJECT',
+            properties: {
+              monetizationType: { type: 'STRING' },
+              pricingTiers: {
+                type: 'ARRAY',
+                items: { type: 'STRING' },
+              },
+              estimatedArpu: { type: 'STRING' },
+            },
+            required: ['monetizationType', 'pricingTiers', 'estimatedArpu'],
+          },
+          swotAnalysis: {
+            type: 'OBJECT',
+            properties: {
+              strengths: { type: 'ARRAY', items: { type: 'STRING' } },
+              weaknesses: { type: 'ARRAY', items: { type: 'STRING' } },
+              opportunities: { type: 'ARRAY', items: { type: 'STRING' } },
+              threats: { type: 'ARRAY', items: { type: 'STRING' } },
+            },
+            required: ['strengths', 'weaknesses', 'opportunities', 'threats'],
+          },
           techStack: {
             type: 'ARRAY',
             items: { type: 'STRING' },
+          },
+          technicalArchitecture: {
+            type: 'OBJECT',
+            properties: {
+              frontend: { type: 'STRING' },
+              backendAndAnalytics: { type: 'ARRAY', items: { type: 'STRING' } },
+              infrastructureInsights: { type: 'STRING' },
+            },
+            required: ['frontend', 'backendAndAnalytics', 'infrastructureInsights'],
           },
           keyInsights: {
             type: 'ARRAY',
@@ -110,7 +178,12 @@ CRITICAL INSTRUCTIONS:
         },
         required: [
           'businessSummary',
+          'valuePropositions',
+          'targetPersona',
+          'revenueModel',
+          'swotAnalysis',
           'techStack',
+          'technicalArchitecture',
           'keyInsights',
           'recommendations',
           'competitors',
