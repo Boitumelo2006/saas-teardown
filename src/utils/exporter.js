@@ -3,6 +3,7 @@ import { createWriteStream } from 'fs';
 import path from 'path';
 import handlebars from 'handlebars';
 import PDFDocument from 'pdfkit';
+import { supabase } from '../middleware/auth.js';
 
 /**
  * Handlebars HTML Template with Minimalist Typography
@@ -202,6 +203,36 @@ const HTML_TEMPLATE = `
 </body>
 </html>
 `;
+
+/**
+ * Uploads a file to Supabase Storage ('teardowns' bucket) and returns the public CDN URL.
+ */
+async function uploadToSupabaseStorage(filePath, destinationPath) {
+  try {
+    const fileBuffer = await fs.readFile(filePath);
+
+    const { data, error } = await supabase.storage
+      .from('teardowns')
+      .upload(destinationPath, fileBuffer, {
+        contentType: 'application/pdf',
+        upsert: true,
+      });
+
+    if (error) {
+      console.error('❌ [Supabase Storage Error]:', error.message);
+      return null;
+    }
+
+    const { data: publicUrlData } = supabase.storage
+      .from('teardowns')
+      .getPublicUrl(data.path);
+
+    return publicUrlData.publicUrl;
+  } catch (err) {
+    console.error('❌ [Storage Upload Exception]:', err.message);
+    return null;
+  }
+}
 
 export async function exportReport(jsonData, options = { format: 'html' }) {
   const outputDir = options.outdir || options.outputDir || './outputs';
@@ -440,7 +471,17 @@ export async function exportReport(jsonData, options = { format: 'html' }) {
 
       doc.end();
 
-      stream.on('finish', () => resolve(pdfPath));
+      stream.on('finish', async () => {
+        const destinationPath = `reports/${safeName}-${Date.now()}.pdf`;
+        const publicUrl = await uploadToSupabaseStorage(pdfPath, destinationPath);
+
+        // Attaches publicUrl alongside the local file path
+        resolve({
+          localPath: pdfPath,
+          publicUrl: publicUrl || null,
+        });
+      });
+
       stream.on('error', (err) => reject(err));
     });
   }
