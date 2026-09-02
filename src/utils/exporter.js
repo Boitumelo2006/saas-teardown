@@ -1,10 +1,10 @@
+// src/utils/exporter.js
 import fs from 'fs/promises';
 import { createWriteStream } from 'fs';
 import path from 'path';
 import handlebars from 'handlebars';
 import PDFDocument from 'pdfkit';
-import { supabase } from '../middleware/auth.js';
-
+import { supabase } from '../config/supabase.js';
 /**
  * Handlebars HTML Template with Minimalist Typography
  */

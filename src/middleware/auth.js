@@ -1,4 +1,5 @@
 // src/middleware/auth.js
+import { supabase } from '../config/supabase.js';
 
 // Rename 'requireAuth' to 'authenticateUser'
 export const authenticateUser = async (req, res, next) => {
