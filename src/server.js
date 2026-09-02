@@ -1,3 +1,5 @@
+// server.js
+
 import express from 'express';
 import cors from 'cors';
 import path from 'path';
@@ -5,7 +7,7 @@ import fs from 'fs';
 import { fileURLToPath } from 'url';
 import rateLimit from 'express-rate-limit';
 import { teardownSite } from './index.js';
-import { requireAuth } from './middleware/auth.js';
+import { authenticateUser } from './middleware/auth.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -89,7 +91,7 @@ app.get('/', (req, res) => {
  * Teardown API Endpoint
  * POST /api/teardown
  */
-app.post('/api/teardown', teardownLimiter, requireAuth, async (req, res) => {
+app.post('/api/teardown', teardownLimiter, authenticateUser, async (req, res) => {
   try {
     const { url, name, format, force = false } = req.body;
     const userId = req.user?.id;
