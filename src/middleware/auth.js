@@ -1,19 +1,7 @@
-import { createClient } from '@supabase/supabase-js';
+// src/middleware/auth.js
 
-const supabaseUrl = process.env.SUPABASE_URL;
-// Updated to read the new publishable key variable (falls back to legacy anon key if not set)
-const supabasePublishableKey = process.env.SUPABASE_PUBLISHABLE_KEY || process.env.SUPABASE_ANON_KEY;
-
-if (!supabaseUrl || !supabasePublishableKey) {
-  throw new Error('Missing SUPABASE_URL or SUPABASE_PUBLISHABLE_KEY environment variables.');
-}
-
-export const supabase = createClient(supabaseUrl, supabasePublishableKey);
-
-/**
- * Express middleware to authenticate requests using Supabase Auth (Publishable Key setup)
- */
-export const requireAuth = async (req, res, next) => {
+// Rename 'requireAuth' to 'authenticateUser'
+export const authenticateUser = async (req, res, next) => {
   try {
     const authHeader = req.headers.authorization;
 
