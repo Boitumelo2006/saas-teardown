@@ -112,7 +112,34 @@ app.post('/api/teardown', teardownLimiter, authenticateUser, async (req, res) =>
       ? 'pdf' 
       : format.toLowerCase();
 
-    // Run core engine pipeline
+    const protocol = req.headers['x-forwarded-proto'] || req.protocol;
+    const host = req.get('host');
+    const targetExtension = `.${exportFormat}`;
+    const cleanBaseName = siteName.toLowerCase().replace(/[^a-z0-9]/g, '');
+
+    // Helper: Check if file already exists in outputs directory
+    const checkExistingFile = () => {
+      const files = fs.readdirSync(outputsDir);
+      return files.find(f => {
+        const cleanFileName = f.toLowerCase().replace(/[^a-z0-9]/g, '');
+        return f.endsWith(targetExtension) && cleanFileName.includes(cleanBaseName);
+      });
+    };
+
+    // 1. On-Demand Cache Hit: Return existing file if available and not forced
+    if (!force) {
+      const existingFile = checkExistingFile();
+      if (existingFile) {
+        return res.json({
+          success: true,
+          userId,
+          cached: true,
+          downloadUrl: `${protocol}://${host}/outputs/${existingFile}`
+        });
+      }
+    }
+
+    // 2. Cache Miss / Forced: Run core engine pipeline to generate new report
     const report = await teardownSite(
       { name: siteName, url: targetUrl },
       { format: exportFormat, force, outdir: outputsDir }
@@ -122,25 +149,14 @@ app.post('/api/teardown', teardownLimiter, authenticateUser, async (req, res) =>
       return res.status(500).json({ error: 'Analysis failed during crawling or LLM synthesis.' });
     }
 
-    const protocol = req.headers['x-forwarded-proto'] || req.protocol;
-    const host = req.get('host');
-
-    // Dynamic file detection inside outputsDir
-    const files = fs.readdirSync(outputsDir);
-    const targetExtension = `.${exportFormat}`;
-    const cleanBaseName = siteName.toLowerCase().replace(/[^a-z0-9]/g, '');
-
-    const matchedFile = files.find(f => {
-      const cleanFileName = f.toLowerCase().replace(/[^a-z0-9]/g, '');
-      return f.endsWith(targetExtension) && cleanFileName.includes(cleanBaseName);
-    });
-
+    const matchedFile = checkExistingFile();
     const activeFileName = matchedFile || `${siteName}.${exportFormat}`;
     const localDownloadUrl = `${protocol}://${host}/outputs/${activeFileName}`;
 
     return res.json({
       success: true,
       userId,
+      cached: false,
       data: report,
       downloadUrl: report.publicUrl || localDownloadUrl
     });
