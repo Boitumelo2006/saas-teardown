@@ -36,7 +36,7 @@ function normalizeUrl(input) {
     throw new Error(`Invalid URL provided: "${input}".`);
   }
 }
-
+//
 /**
  * Organizes a flat list of detected fingerprint objects into categorized technology groups.
  */
