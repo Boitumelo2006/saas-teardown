@@ -1,4 +1,5 @@
 import { chromium } from 'playwright';
+import { extractSocialMedia } from './socialScraper.js';
 
 const NAVIGATION_TIMEOUT = 12000;
 const POST_LOAD_BUFFER = 1500;
@@ -22,7 +23,7 @@ async function extractPageDetails(page) {
       .map((h) => clean(h.innerText))
       .filter(Boolean);
 
-    // Identify internal target routes from anchor tags
+    // Identify internal and external target routes from anchor tags
     const internalLinks = Array.from(document.querySelectorAll('a[href]'))
       .map((a) => ({ text: clean(a.innerText), href: a.href }))
       .filter((link) => link.href.startsWith('http'));
@@ -93,6 +94,9 @@ export async function crawlWebsite(targetUrl) {
       await page.waitForTimeout(POST_LOAD_BUFFER);
       const { scripts: mainScripts, pageData: mainPageData } = await extractPageDetails(page);
 
+      // Extract Social Channels from landing page anchors
+      const socialChannels = extractSocialMedia(mainPageData.internalLinks);
+
       // 2. Discover Secondary Target Links (Pricing, About, Features, Plans)
       const targetDomain = new URL(targetUrl).hostname.replace(/^www\./, '');
       const subpageCandidates = mainPageData.internalLinks.filter((link) => {
@@ -123,11 +127,12 @@ export async function crawlWebsite(targetUrl) {
       return {
         scripts: mainScripts,
         mainPageData,
+        socialChannels,
         subpages: subpageResults
       };
     })();
 
-    const { scripts, mainPageData, subpages } = await Promise.race([crawlPromise, timeoutPromise]);
+    const { scripts, mainPageData, socialChannels, subpages } = await Promise.race([crawlPromise, timeoutPromise]);
     const endTime = Date.now();
 
     await browser.close();
@@ -139,6 +144,7 @@ export async function crawlWebsite(targetUrl) {
         networkRequests: Array.from(networkRequests),
         responseHeaders,
         scripts,
+        socialChannels, // <--- Social Media Data Source Attached
         pageData: {
           title: mainPageData.title,
           headings: mainPageData.headings,

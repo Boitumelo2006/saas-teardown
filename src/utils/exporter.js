@@ -5,8 +5,9 @@ import path from 'path';
 import handlebars from 'handlebars';
 import PDFDocument from 'pdfkit';
 import { supabase } from '../config/supabase.js';
+
 /**
- * Handlebars HTML Template with Minimalist Typography
+ * Handlebars HTML Template with Minimalist Typography & Social Badges
  */
 const HTML_TEMPLATE = `
 <!DOCTYPE html>
@@ -87,6 +88,11 @@ const HTML_TEMPLATE = `
       font-weight: 600;
       font-size: 12px;
     }
+    .badge-social {
+      background: #eff6ff;
+      color: #1d4ed8;
+      border: 1px solid #bfdbfe;
+    }
     
     ul { margin: 0; padding-left: 18px; color: #334155; }
     li { margin-bottom: 6px; font-size: 14px; }
@@ -116,6 +122,20 @@ const HTML_TEMPLATE = `
         <li>{{this}}</li>
       {{/each}}
     </ul>
+    
+    {{#if socialChannels}}
+    <div style="margin-top: 16px;">
+      <strong>Official Social Channels:</strong>
+      <div class="badge-container">
+        {{#if socialChannels.twitter}}<a href="{{socialChannels.twitter}}" class="badge badge-social" target="_blank">Twitter / X</a>{{/if}}
+        {{#if socialChannels.linkedin}}<a href="{{socialChannels.linkedin}}" class="badge badge-social" target="_blank">LinkedIn</a>{{/if}}
+        {{#if socialChannels.github}}<a href="{{socialChannels.github}}" class="badge badge-social" target="_blank">GitHub</a>{{/if}}
+        {{#if socialChannels.youtube}}<a href="{{socialChannels.youtube}}" class="badge badge-social" target="_blank">YouTube</a>{{/if}}
+        {{#if socialChannels.discord}}<a href="{{socialChannels.discord}}" class="badge badge-social" target="_blank">Discord</a>{{/if}}
+        {{#if socialChannels.producthunt}}<a href="{{socialChannels.producthunt}}" class="badge badge-social" target="_blank">ProductHunt</a>{{/if}}
+      </div>
+    </div>
+    {{/if}}
   </div>
 
   <div class="grid-2 section">
@@ -290,7 +310,7 @@ export async function exportReport(jsonData, options = { format: 'html' }) {
           // White-label Logo Container Box (Top Right)
           doc.roundedRect(420, currentY, 130, 32, 4).lineWidth(0.5).dash(3, { space: 3 }).stroke('#cbd5e1');
           doc.undash();
-          doc.fontSize(8).fillColor('#94a3b8').font('Helvetica-Bold').text('Saas Teardown', 438, currentY + 12);
+          doc.fontSize(8).fillColor('#94a3b8').font('Helvetica-Bold').text('SaaS Teardown', 438, currentY + 12);
 
           // Divider Line
           doc.moveTo(45, currentY + 48).lineTo(550, currentY + 48).lineWidth(1).stroke('#0f172a');
@@ -326,6 +346,21 @@ export async function exportReport(jsonData, options = { format: 'html' }) {
           doc.fontSize(9).fillColor('#334155').font('Helvetica').text(vp, 57, currentY, { width: PAGE_WIDTH - 12, lineGap: 2 });
           currentY = doc.y + 4;
         });
+      }
+
+      // Render Social Channels in PDF
+      if (jsonData.socialChannels) {
+        const channels = Object.entries(jsonData.socialChannels)
+          .filter(([_, url]) => Boolean(url))
+          .map(([platform]) => platform.toUpperCase());
+
+        if (channels.length) {
+          currentY += 6;
+          ensureSpace(20);
+          doc.fontSize(9).fillColor('#0f172a').font('Helvetica-Bold').text('Social Channels: ', 45, currentY, { continued: true });
+          doc.font('Helvetica').fillColor('#2563eb').text(channels.join('  •  '));
+          currentY = doc.y + 6;
+        }
       }
       currentY += 16;
 
@@ -475,7 +510,6 @@ export async function exportReport(jsonData, options = { format: 'html' }) {
         const destinationPath = `reports/${safeName}-${Date.now()}.pdf`;
         const publicUrl = await uploadToSupabaseStorage(pdfPath, destinationPath);
 
-        // Attaches publicUrl alongside the local file path
         resolve({
           localPath: pdfPath,
           publicUrl: publicUrl || null,
