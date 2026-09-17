@@ -66,9 +66,9 @@ function formatSubpages(subpages = []) {
 }
 
 /**
- * Analyzes a single site's scraped payload with pre-sanitization.
+ * Analyzes a single site's scraped payload and SEO data with pre-sanitization.
  */
-export async function analyzeSiteData(siteName, rawOutput) {
+export async function analyzeSiteData(siteName, rawOutput, seoData = null) {
   const model = process.env.GEMINI_MODEL || 'gemini-2.5-flash';
 
   let rawDataToSanitize = rawOutput;
@@ -88,19 +88,26 @@ export async function analyzeSiteData(siteName, rawOutput) {
     throw new Error(`Scraped content for ${siteName} is empty or unreadable.`);
   }
 
+  const extractedSeo = seoData || rawOutput?.seo || { authorityScore: 0, estimatedIndexedPages: 0, sampleHeadlines: [] };
+
   const userContent = JSON.stringify({
     siteName,
     primaryLandingData: sanitizedInput,
     subpagesEvidence: subpagesContext,
+    seoFootprint: {
+      domainPageRank: extractedSeo.authorityScore,
+      estimatedIndexedPages: extractedSeo.estimatedIndexedPages,
+      topSerpHeadlines: extractedSeo.sampleHeadlines,
+    },
   });
 
-  const systemInstruction = `You are a world-class SaaS competitive intelligence analyst preparing an executive-grade teardown report for investors and product leaders. Analyze the provided scraped web data and subpages to output an in-depth, comprehensive breakdown.
+  const systemInstruction = `You are a world-class SaaS competitive intelligence analyst preparing an executive-grade teardown report for investors and product leaders. Analyze the provided scraped web data, subpages, and organic SEO footprint to output an in-depth, comprehensive breakdown.
 
 CRITICAL INSTRUCTIONS:
 1. Provide deep, granular analysis across all requested dimensions (SWOT, Revenue Models, Persona Breakdown, Technical Stack). Avoid vague generic statements.
 2. Under "revenueModel", extract specific tier prices, billing cycles, or transaction rates if visible in the scraped text.
-3. Under "swotAnalysis", identify strategic SaaS positioning strengths, weaknesses, growth opportunities, and market threats.
-4. Synthesize all subpage evidence (pricing, plans, support) into clear, actionable executive insights.`;
+3. Under "swotAnalysis", evaluate strategic positioning, market reach, technical stack choices, and organic domain authority.
+4. Synthesize all subpage evidence and SEO search footprints into clear, actionable executive insights.`;
 
   const response = await callGeminiWithRetry({
     model,
@@ -217,7 +224,7 @@ export async function analyzeSiteDataBatch(siteItems, concurrencyLimit = 5) {
   const tasks = siteItems.map((item) =>
     limit(async () => {
       try {
-        const result = await analyzeSiteData(item.siteName, item.rawData);
+        const result = await analyzeSiteData(item.siteName, item.rawData, item.seoData);
         return { status: 'fulfilled', siteName: item.siteName, data: result };
       } catch (error) {
         return { status: 'rejected', siteName: item.siteName, error: error.message };

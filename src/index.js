@@ -11,6 +11,7 @@ import { analyzeSiteData } from './analyzer.js';
 import { saveAnalysisResult } from './storage.js';
 import { getCachedAnalysis, setCachedAnalysis } from './cache.js';
 import { exportReport } from './utils/exporter.js';
+import { analyzeSEO } from './services/seoService.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -69,16 +70,23 @@ function categorizeTechStack(detectedTechnologies = []) {
 }
 
 /**
- * Formats report payload by merging LLM output, scraper raw evidence, and social footprints.
+ * Formats report payload by merging LLM output, scraper raw evidence, SEO footprint, and social footprints.
  */
-function formatReportPayload(site, rawOutput, reportData) {
+function formatReportPayload(site, rawOutput, reportData, seoData = {}) {
   const detectedTech = rawOutput?.detectedTechnologies || [];
   const categorizedTech = categorizeTechStack(detectedTech);
+
+  const seo = {
+    authorityScore: seoData?.authorityScore ?? 0,
+    estimatedIndexedPages: seoData?.estimatedIndexedPages ?? 0,
+    sampleHeadlines: seoData?.sampleHeadlines || [],
+  };
 
   return {
     targetDomain: site.name,
     url: site.url,
     timestamp: new Date().toISOString().split('T')[0],
+    seo,
     socialFootprint: rawOutput?.rawEvidence?.socialChannels || {
       twitter: null,
       linkedin: null,
@@ -120,6 +128,7 @@ function formatReportPayload(site, rawOutput, reportData) {
     keyInsights: reportData?.keyInsights || reportData?.insights || [
       `Crawl completed with latency of ${((rawOutput?.crawl?.latencyMs || 0) / 1000).toFixed(1)}s.`,
       `Identified ${detectedTech.length} client-side fingerprints.`,
+      `Domain Authority: ${seo.authorityScore}/10 | Est. Indexed Pages: ${seo.estimatedIndexedPages}`,
     ],
     recommendations: reportData?.recommendations || [
       'No specific recommendations extracted from landing page data.',
@@ -156,10 +165,18 @@ export async function teardownSite(site, options = {}) {
     }
   }
 
-  // Cache MISS or Force Refresh -> Crawl and Synthesize
+  // Cache MISS or Force Refresh -> Crawl, SEO Fetch, and Synthesize
   if (!finalReport) {
-    // 1. Crawl Target Site
-    const result = await crawlWebsite(site.url);
+    // 1. Parallel Execution: Crawl Target Site & Fetch SEO Metrics
+    console.log(`📡 Fetching page content and SEO intelligence...`);
+    const [result, seoData] = await Promise.all([
+      crawlWebsite(site.url),
+      analyzeSEO(site.name).catch((err) => {
+        console.warn(`⚠️ SEO Service Warning: ${err.message}`);
+        return { authorityScore: 0, estimatedIndexedPages: 0, sampleHeadlines: [] };
+      }),
+    ]);
+
     if (!result.success) {
       console.log(`❌ Crawl Failed: ${result.error}\n`);
       return null;
@@ -173,6 +190,7 @@ export async function teardownSite(site, options = {}) {
       crawl: { success: result.success, latencyMs: result.latencyMs },
       detectedTechnologies: detected,
       rawEvidence: result.rawEvidence,
+      seo: seoData,
     };
 
     // Save Raw Scraping Payload
@@ -181,6 +199,7 @@ export async function teardownSite(site, options = {}) {
     await fs.writeFile(rawPath, JSON.stringify(rawOutput, null, 2), 'utf-8');
 
     console.log(`✅ Crawled in ${(result.latencyMs / 1000).toFixed(1)}s`);
+    console.log(`📈 Domain Authority: ${seoData.authorityScore}/10 | Est. Pages: ${seoData.estimatedIndexedPages}`);
     console.log(
       `🛠️ Tech Stack: ${detected.map((t) => t.technology).join(', ') || 'None'}`
     );
@@ -188,18 +207,18 @@ export async function teardownSite(site, options = {}) {
     // 3. Run Gemini Synthesis
     if (!process.env.GEMINI_API_KEY) {
       console.log(`⚠️ Skipped LLM analysis (GEMINI_API_KEY missing in .env)\n`);
-      finalReport = formatReportPayload(site, rawOutput, null);
+      finalReport = formatReportPayload(site, rawOutput, null, seoData);
     } else {
       console.log(`🤖 Synthesizing report with Gemini...`);
       try {
-        const report = await analyzeSiteData(site.name, rawOutput);
-        finalReport = formatReportPayload(site, rawOutput, report);
+        const report = await analyzeSiteData(site.name, rawOutput, seoData);
+        finalReport = formatReportPayload(site, rawOutput, report, seoData);
 
         // Save to 24-hour persistent cache
         await setCachedAnalysis(site.url, finalReport);
       } catch (err) {
         console.log(`❌ Gemini Analysis Failed: ${err.message}\n`);
-        finalReport = formatReportPayload(site, rawOutput, null);
+        finalReport = formatReportPayload(site, rawOutput, null, seoData);
       }
     }
   }

@@ -1,4 +1,3 @@
-// src/utils/exporter.js
 import fs from 'fs/promises';
 import { createWriteStream } from 'fs';
 import path from 'path';
@@ -7,7 +6,7 @@ import PDFDocument from 'pdfkit';
 import { supabase } from '../config/supabase.js';
 
 /**
- * Handlebars HTML Template with Minimalist Typography & Social Badges
+ * Handlebars HTML Template with Minimalist Typography, Social Badges, and SEO Footprint
  */
 const HTML_TEMPLATE = `
 <!DOCTYPE html>
@@ -102,6 +101,9 @@ const HTML_TEMPLATE = `
     .swot-w { background: #fef2f2; border: 1px solid #fecaca; }
     .swot-o { background: #eff6ff; border: 1px solid #bfdbfe; }
     .swot-t { background: #fffbebf; border: 1px solid #fde68a; }
+
+    .seo-stat { font-size: 20px; font-weight: 800; color: #0f172a; }
+    .seo-label { font-size: 12px; color: #64748b; font-weight: 600; text-transform: uppercase; margin-bottom: 4px; }
   </style>
 </head>
 <body>
@@ -138,9 +140,35 @@ const HTML_TEMPLATE = `
     {{/if}}
   </div>
 
+  {{#if seo}}
+  <div class="section">
+    <div class="section-title">02. Organic Visibility & SEO Footprint</div>
+    <div class="grid-2" style="margin-bottom: 16px;">
+      <div class="card">
+        <div class="seo-label">Domain Authority Score</div>
+        <div class="seo-stat">{{seo.authorityScore}} / 10</div>
+      </div>
+      <div class="card">
+        <div class="seo-label">Estimated Indexed Pages</div>
+        <div class="seo-stat">{{seo.estimatedIndexedPages}}</div>
+      </div>
+    </div>
+    {{#if seo.sampleHeadlines.length}}
+    <div class="card">
+      <h4>Top SERP Headlines & Titles</h4>
+      <ul>
+        {{#each seo.sampleHeadlines}}
+          <li>{{this}}</li>
+        {{/each}}
+      </ul>
+    </div>
+    {{/if}}
+  </div>
+  {{/if}}
+
   <div class="grid-2 section">
     <div class="card">
-      <div class="section-title">02. Target Persona</div>
+      <div class="section-title">03. Target Persona</div>
       <h4>Primary Audience</h4>
       <p>{{targetPersona.primaryAudience}}</p>
       <h4>Ideal Customer Profile</h4>
@@ -154,7 +182,7 @@ const HTML_TEMPLATE = `
     </div>
 
     <div class="card">
-      <div class="section-title">03. Revenue Model</div>
+      <div class="section-title">04. Revenue Model</div>
       <h4>Monetization Type</h4>
       <p>{{revenueModel.monetizationType}}</p>
       <h4>Estimated ARPU</h4>
@@ -169,7 +197,7 @@ const HTML_TEMPLATE = `
   </div>
 
   <div class="section">
-    <div class="section-title">04. Strategic SWOT Analysis</div>
+    <div class="section-title">05. Strategic SWOT Analysis</div>
     <div class="grid-4">
       <div class="swot-box swot-s">
         <strong>Strengths</strong>
@@ -191,7 +219,7 @@ const HTML_TEMPLATE = `
   </div>
 
   <div class="section">
-    <div class="section-title">05. Technical Architecture & Stack</div>
+    <div class="section-title">06. Technical Architecture & Stack</div>
     <p><strong>Frontend:</strong> {{technicalArchitecture.frontend}}</p>
     <p><strong>Infrastructure:</strong> {{technicalArchitecture.infrastructureInsights}}</p>
     <div class="badge-container">
@@ -203,7 +231,7 @@ const HTML_TEMPLATE = `
 
   <div class="grid-2 section">
     <div class="card">
-      <div class="section-title">06. Key Insights</div>
+      <div class="section-title">07. Key Insights</div>
       <ul>
         {{#each keyInsights}}
           <li>{{this}}</li>
@@ -211,7 +239,7 @@ const HTML_TEMPLATE = `
       </ul>
     </div>
     <div class="card">
-      <div class="section-title">07. Strategic Recommendations</div>
+      <div class="section-title">08. Strategic Recommendations</div>
       <ul>
         {{#each recommendations}}
           <li>{{this}}</li>
@@ -257,7 +285,7 @@ async function uploadToSupabaseStorage(filePath, destinationPath) {
 export async function exportReport(jsonData, options = { format: 'html' }) {
   const outputDir = options.outdir || options.outputDir || './outputs';
   await fs.mkdir(outputDir, { recursive: true });
-  
+
   const safeName = (jsonData.targetDomain || 'report').toLowerCase().replace(/[^a-z0-9]/g, '_');
   const outputFilename = `teardown-${safeName}`;
 
@@ -306,7 +334,7 @@ export async function exportReport(jsonData, options = { format: 'html' }) {
           // Main Document Header
           doc.fontSize(22).fillColor('#0f172a').font('Helvetica-Bold').text(jsonData.targetDomain.toUpperCase(), 45, currentY);
           doc.fontSize(9).fillColor('#64748b').font('Helvetica').text(`URL: ${jsonData.url}   |   DATE: ${jsonData.timestamp}`, 45, currentY + 28);
-          
+
           // White-label Logo Container Box (Top Right)
           doc.roundedRect(420, currentY, 130, 32, 4).lineWidth(0.5).dash(3, { space: 3 }).stroke('#cbd5e1');
           doc.undash();
@@ -364,8 +392,33 @@ export async function exportReport(jsonData, options = { format: 'html' }) {
       }
       currentY += 16;
 
-      // --- SECTION 2: TARGET PERSONA ---
-      drawSectionHeader('02. Target Persona & ICP');
+      // --- SECTION 2: ORGANIC VISIBILITY & SEO FOOTPRINT ---
+      if (jsonData.seo) {
+        drawSectionHeader('02. Organic Visibility & SEO Footprint');
+
+        doc.fontSize(9).fillColor('#0f172a').font('Helvetica-Bold').text('Domain Authority Score: ', 45, currentY, { continued: true });
+        doc.font('Helvetica').fillColor('#334155').text(`${jsonData.seo.authorityScore ?? 0} / 10`);
+        currentY = doc.y + 6;
+
+        doc.fontSize(9).fillColor('#0f172a').font('Helvetica-Bold').text('Estimated Indexed Pages: ', 45, currentY, { continued: true });
+        doc.font('Helvetica').fillColor('#334155').text(`${jsonData.seo.estimatedIndexedPages ?? 0}`);
+        currentY = doc.y + 10;
+
+        if (jsonData.seo.sampleHeadlines?.length) {
+          doc.fontSize(9).fillColor('#0f172a').font('Helvetica-Bold').text('Top SERP Headlines:', 45, currentY);
+          currentY += 14;
+          jsonData.seo.sampleHeadlines.forEach((headline) => {
+            ensureSpace(18);
+            doc.fontSize(9).fillColor('#64748b').font('Helvetica-Bold').text('•', 50, currentY);
+            doc.fontSize(9).fillColor('#334155').font('Helvetica').text(headline, 60, currentY, { width: PAGE_WIDTH - 15 });
+            currentY = doc.y + 3;
+          });
+        }
+        currentY += 16;
+      }
+
+      // --- SECTION 3: TARGET PERSONA ---
+      drawSectionHeader('03. Target Persona & ICP');
       doc.fontSize(9).fillColor('#0f172a').font('Helvetica-Bold').text('Primary Audience: ', 45, currentY, { continued: true });
       doc.font('Helvetica').fillColor('#334155').text(jsonData.targetPersona?.primaryAudience || 'N/A');
       currentY = doc.y + 6;
@@ -386,8 +439,8 @@ export async function exportReport(jsonData, options = { format: 'html' }) {
       }
       currentY += 16;
 
-      // --- SECTION 3: REVENUE MODEL ---
-      drawSectionHeader('03. Revenue & Monetization Model');
+      // --- SECTION 4: REVENUE MODEL ---
+      drawSectionHeader('04. Revenue & Monetization Model');
       doc.fontSize(9).fillColor('#0f172a').font('Helvetica-Bold').text('Monetization Type: ', 45, currentY, { continued: true });
       doc.font('Helvetica').fillColor('#334155').text(jsonData.revenueModel?.monetizationType || 'N/A');
       currentY = doc.y + 6;
@@ -408,8 +461,8 @@ export async function exportReport(jsonData, options = { format: 'html' }) {
       }
       currentY += 16;
 
-      // --- SECTION 4: SWOT ANALYSIS ---
-      drawSectionHeader('04. Strategic SWOT Matrix');
+      // --- SECTION 5: SWOT ANALYSIS ---
+      drawSectionHeader('05. Strategic SWOT Matrix');
       const renderSwotBlock = (title, items) => {
         if (!items || !items.length) return;
         ensureSpace(30);
@@ -432,8 +485,8 @@ export async function exportReport(jsonData, options = { format: 'html' }) {
       }
       currentY += 10;
 
-      // --- SECTION 5: TECHNICAL ARCHITECTURE & STACK ---
-      drawSectionHeader('05. Technical Stack & Architecture');
+      // --- SECTION 6: TECHNICAL ARCHITECTURE & STACK ---
+      drawSectionHeader('06. Technical Stack & Architecture');
       doc.fontSize(9).fillColor('#0f172a').font('Helvetica-Bold').text('Frontend Infrastructure: ', 45, currentY, { continued: true });
       doc.font('Helvetica').fillColor('#334155').text(jsonData.technicalArchitecture?.frontend || 'N/A');
       currentY = doc.y + 6;
@@ -466,9 +519,9 @@ export async function exportReport(jsonData, options = { format: 'html' }) {
         currentY += 28;
       }
 
-      // --- SECTION 6: INSIGHTS & RECOMMENDATIONS ---
-      drawSectionHeader('06. Strategic Insights & Recommendations');
-      
+      // --- SECTION 7: INSIGHTS & RECOMMENDATIONS ---
+      drawSectionHeader('07. Strategic Insights & Recommendations');
+
       if (jsonData.keyInsights?.length) {
         doc.fontSize(9).fillColor('#0f172a').font('Helvetica-Bold').text('Key Insights:', 45, currentY);
         currentY += 14;
