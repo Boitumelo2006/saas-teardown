@@ -39,7 +39,7 @@ async function extractPageDetails(page) {
 /**
  * Safely visits secondary routes (e.g., pricing, about, features) and extracts text payload.
  */
-async function crawlSubpage(page, url, networkRequests) {
+async function crawlSubpage(page, url) {
   try {
     await page.goto(url, { waitUntil: 'domcontentloaded', timeout: NAVIGATION_TIMEOUT });
     await page.waitForTimeout(POST_LOAD_BUFFER);
@@ -50,7 +50,7 @@ async function crawlSubpage(page, url, networkRequests) {
       success: true,
       title: pageData.title,
       headings: pageData.headings,
-      bodyTextSnippet: pageData.bodyTextSnippet
+      bodyTextSnippet: pageData.bodyTextSnippet,
     };
   } catch (err) {
     return { url, success: false, error: err.message };
@@ -81,7 +81,7 @@ export async function crawlWebsite(targetUrl) {
       // 1. Crawl Primary Landing Page
       const response = await page.goto(targetUrl, {
         waitUntil: 'domcontentloaded',
-        timeout: NAVIGATION_TIMEOUT
+        timeout: NAVIGATION_TIMEOUT,
       });
 
       if (response) {
@@ -94,7 +94,7 @@ export async function crawlWebsite(targetUrl) {
       await page.waitForTimeout(POST_LOAD_BUFFER);
       const { scripts: mainScripts, pageData: mainPageData } = await extractPageDetails(page);
 
-      // Extract Social Channels from landing page anchors
+      // Extract Social Channels from landing page anchors using socialScraper.js
       const socialChannels = extractSocialMedia(mainPageData.internalLinks);
 
       // 2. Discover Secondary Target Links (Pricing, About, Features, Plans)
@@ -120,7 +120,7 @@ export async function crawlWebsite(targetUrl) {
       // 3. Crawl Discovered Subpages
       const subpageResults = [];
       for (const subUrl of uniqueSubpageUrls) {
-        const subData = await crawlSubpage(page, subUrl, networkRequests);
+        const subData = await crawlSubpage(page, subUrl);
         subpageResults.push(subData);
       }
 
@@ -128,11 +128,14 @@ export async function crawlWebsite(targetUrl) {
         scripts: mainScripts,
         mainPageData,
         socialChannels,
-        subpages: subpageResults
+        subpages: subpageResults,
       };
     })();
 
-    const { scripts, mainPageData, socialChannels, subpages } = await Promise.race([crawlPromise, timeoutPromise]);
+    const { scripts, mainPageData, socialChannels, subpages } = await Promise.race([
+      crawlPromise,
+      timeoutPromise,
+    ]);
     const endTime = Date.now();
 
     await browser.close();
@@ -144,21 +147,21 @@ export async function crawlWebsite(targetUrl) {
         networkRequests: Array.from(networkRequests),
         responseHeaders,
         scripts,
-        socialChannels, // <--- Social Media Data Source Attached
+        socialChannels,
         pageData: {
           title: mainPageData.title,
           headings: mainPageData.headings,
-          bodyTextSnippet: mainPageData.bodyTextSnippet
+          bodyTextSnippet: mainPageData.bodyTextSnippet,
         },
-        subpages
-      }
+        subpages,
+      },
     };
   } catch (error) {
     await browser.close();
     return {
       success: false,
       error: error.message,
-      latencyMs: Date.now() - startTime
+      latencyMs: Date.now() - startTime,
     };
   }
 }

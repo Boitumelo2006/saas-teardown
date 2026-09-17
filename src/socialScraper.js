@@ -1,45 +1,51 @@
+import * as cheerio from 'cheerio';
+
 /**
- * Scrapes and categorizes official social media profile links from page anchor objects.
- * @param {Array<{href: string, text: string}>} links - List of internal/external anchor links.
- * @returns {Object} Harvested social channels.
+ * Extracts social media URLs from page anchor links or raw HTML string.
  */
-export function extractSocialMedia(links = []) {
-  const socialChannels = {
+export function extractSocialMedia(links = [], html = '') {
+  const socials = {
     twitter: null,
     linkedin: null,
     github: null,
     youtube: null,
-    discord: null,
-    producthunt: null,
+    facebook: null,
+    instagram: null,
   };
 
-  if (!Array.isArray(links)) return socialChannels;
+  // 1. Scan structured link objects extracted by Playwright
+  links.forEach((link) => {
+    const href = link.href || link;
+    if (typeof href !== 'string') return;
 
-  for (const link of links) {
-    const href = link.href?.trim();
-    if (!href) continue;
-
-    try {
-      const url = new URL(href);
-      const host = url.hostname.toLowerCase();
-
-      if ((host.includes('twitter.com') || host.includes('x.com')) && !socialChannels.twitter) {
-        socialChannels.twitter = href;
-      } else if (host.includes('linkedin.com') && href.includes('/company/') && !socialChannels.linkedin) {
-        socialChannels.linkedin = href;
-      } else if (host.includes('github.com') && !socialChannels.github) {
-        socialChannels.github = href;
-      } else if ((host.includes('youtube.com') || host.includes('youtu.be')) && !socialChannels.youtube) {
-        socialChannels.youtube = href;
-      } else if ((host.includes('discord.gg') || host.includes('discord.com/invite')) && !socialChannels.discord) {
-        socialChannels.discord = href;
-      } else if (host.includes('producthunt.com') && !socialChannels.producthunt) {
-        socialChannels.producthunt = href;
-      }
-    } catch {
-      // Ignore invalid URL formats
+    if (!socials.twitter && /(twitter\.com|x\.com)\/([a-zA-Z0-9_]+)/i.test(href)) {
+      if (!href.includes('/intent/') && !href.includes('/share')) socials.twitter = href;
+    } else if (!socials.linkedin && /linkedin\.com\/(company|in)\/([a-zA-Z0-9_-]+)/i.test(href)) {
+      socials.linkedin = href;
+    } else if (!socials.github && /github\.com\/([a-zA-Z0-9_-]+)/i.test(href)) {
+      socials.github = href;
+    } else if (!socials.youtube && /youtube\.com\/(c|channel|user|@)/i.test(href)) {
+      socials.youtube = href;
+    } else if (!socials.facebook && /facebook\.com\/([a-zA-Z0-9_.-]+)/i.test(href)) {
+      if (!href.includes('/sharer')) socials.facebook = href;
+    } else if (!socials.instagram && /instagram\.com\/([a-zA-Z0-9_.-]+)/i.test(href)) {
+      socials.instagram = href;
     }
+  });
+
+  // 2. Fallback HTML parsing with Cheerio if raw HTML string provided
+  if (html && Object.values(socials).every((val) => val === null)) {
+    const $ = cheerio.load(html);
+    $('a[href]').each((_, el) => {
+      const href = $(el).attr('href');
+      if (!href) return;
+
+      if (!socials.twitter && /(twitter\.com|x\.com)\//i.test(href)) socials.twitter = href;
+      if (!socials.linkedin && /linkedin\.com\//i.test(href)) socials.linkedin = href;
+      if (!socials.github && /github\.com\//i.test(href)) socials.github = href;
+      if (!socials.youtube && /youtube\.com\//i.test(href)) socials.youtube = href;
+    });
   }
 
-  return socialChannels;
+  return socials;
 }
