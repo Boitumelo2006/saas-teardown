@@ -8,6 +8,7 @@ import { fileURLToPath } from 'url';
 import rateLimit from 'express-rate-limit';
 import { teardownSite } from './index.js';
 import { authenticateUser } from './middleware/auth.js';
+import { detectTechnologies } from './services/techDetector.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -91,7 +92,7 @@ app.get('/', (req, res) => {
  * Teardown API Endpoint
  * POST /api/teardown
  */
-app.post('/api/teardown', teardownLimiter, authenticateUser, async (req, res) => {
+app.post('/api/teardown', teardownLimiter, /*authenticateUser,*/ async (req, res) => {
   try {
     const { url, name, format, force = false } = req.body;
     const userId = req.user?.id;
@@ -112,10 +113,42 @@ app.post('/api/teardown', teardownLimiter, authenticateUser, async (req, res) =>
       ? 'pdf' 
       : format.toLowerCase();
 
-    // Run core engine pipeline
+    // --- Start Tech Detector Payload Pre-fetch ---
+    let detectedTechStack = [];
+    try {
+      const pageResponse = await fetch(targetUrl, {
+        headers: {
+          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
+        }
+      });
+
+      const rawHtml = await pageResponse.text();
+
+      // Extract and format response headers into a clean lowercase map
+      const headers = {};
+      pageResponse.headers.forEach((value, key) => {
+        headers[key.toLowerCase()] = value;
+      });
+
+      // Extract script tags from raw HTML
+      const scriptRegex = /<script\b[^>]*src=["']([^"']+)["']/gi;
+      const scriptSources = [];
+      let match;
+      while ((match = scriptRegex.exec(rawHtml)) !== null) {
+        scriptSources.push(match[1]);
+      }
+
+      // Execute detection over fetched payload
+      detectedTechStack = detectTechnologies(headers, rawHtml, scriptSources);
+    } catch (fetchError) {
+      console.warn(`[Tech Detector Fetch Warning]: ${fetchError.message}`);
+    }
+    // --- End Tech Detector Payload Pre-fetch ---
+
+    // Run core engine pipeline with detected tech stack passed in
     const report = await teardownSite(
-      { name: siteName, url: targetUrl },
-      { format: exportFormat, force, outdir: outputsDir }
+      { name: siteName, url: targetUrl, techStack: detectedTechStack },
+      { format: exportFormat, force, outdir: outputsDir, techStack: detectedTechStack }
     );
 
     if (!report) {

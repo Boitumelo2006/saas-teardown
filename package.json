@@ -14,7 +14,9 @@
   ],
   "scripts": {
     "start": "node src/index.js",
+    "dev": "node --watch src/server.js",
     "server": "node src/server.js",
+    "sync:tech": "node scripts/sync-wappalyzer.js",
     "test": "node --test"
   },
   "dependencies": {
