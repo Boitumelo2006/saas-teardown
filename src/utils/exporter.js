@@ -396,12 +396,20 @@ export async function exportReport(jsonData, options = { format: 'html' }) {
       if (jsonData.seo) {
         drawSectionHeader('02. Organic Visibility & SEO Footprint');
 
+        const authorityDisplay = jsonData.seo.authorityScore !== undefined && jsonData.seo.authorityScore !== null
+          ? `${jsonData.seo.authorityScore} / 10`
+          : 'N/A';
+
+        const indexedPagesDisplay = typeof jsonData.seo.estimatedIndexedPages === 'number'
+          ? jsonData.seo.estimatedIndexedPages.toLocaleString()
+          : (jsonData.seo.estimatedIndexedPages || 'N/A');
+
         doc.fontSize(9).fillColor('#0f172a').font('Helvetica-Bold').text('Domain Authority Score: ', 45, currentY, { continued: true });
-        doc.font('Helvetica').fillColor('#334155').text(`${jsonData.seo.authorityScore ?? 0} / 10`);
+        doc.font('Helvetica').fillColor('#334155').text(authorityDisplay);
         currentY = doc.y + 6;
 
         doc.fontSize(9).fillColor('#0f172a').font('Helvetica-Bold').text('Estimated Indexed Pages: ', 45, currentY, { continued: true });
-        doc.font('Helvetica').fillColor('#334155').text(`${jsonData.seo.estimatedIndexedPages ?? 0}`);
+        doc.font('Helvetica').fillColor('#334155').text(indexedPagesDisplay);
         currentY = doc.y + 10;
 
         if (jsonData.seo.sampleHeadlines?.length) {
